@@ -45,10 +45,8 @@ alexaRouter.post('/', function(req, res) {
 var handlers = {
     'Greeting': function () {
         console.log("Event: " + JSON.stringify(this.event));
-        console.log("Request: " + this.event.request);
-        console.log("Intent: " + this.event.request.intent);
-        console.log("Slots: " + this.event.request.intent.slots);
-        var name = this.event.request.intent.slots.name.value;
+        console.log("Slots: " + JSON.stringify(this.event.request.intent.slots));
+        var name = this.event.request.intent.slots.Name.value;
         console.log(name);
         this.emit(':tell', 'Hallo ' + name);
     }
