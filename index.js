@@ -46,8 +46,8 @@ var handlers = {
     'Greeting': function () {
         console.log("Event: " + JSON.stringify(this.event));
         console.log("Slots: " + JSON.stringify(this.event.request.intent.slots));
-        var name1 = this.event.request.intent.slots.vorname1.value;
-        var name2 = this.event.request.intent.slots.vorname2.value;
+        var name1 = this.event.request.intent.slots.vorname_one.value;
+        var name2 = this.event.request.intent.slots.vorname_two.value;
         this.emit(':tell', 'Hallo ' + name1 +' und ' + name2 + '!');
     }
 };
