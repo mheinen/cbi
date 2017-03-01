@@ -2,6 +2,8 @@
  * Created by matthias on 01.03.17.
  */
 var express = require('express');
+var port = process.env.PORT || 8080;
+
 var bodyParser = require('body-parser');
 
 var app = express();
@@ -64,6 +66,6 @@ var doRequest = function (body) {
     request.end(body)
 };
 
-app.listen(3000, function () {
-    console.log('Warte auf Anfragen auf port 3000!');
+app.listen(port, function () {
+    console.log('Warte auf Anfragen auf port ' + port +'!');
 });
