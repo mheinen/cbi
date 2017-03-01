@@ -1,0 +1,17 @@
+{
+  "name": "cbi",
+  "version": "1.0.0",
+  "description": "Alexa Skill to analyse data with voice command",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Matthias Heinen",
+  "license": "ISC",
+  "dependencies": {
+    "alexa-sdk": "^1.0.7",
+    "alexa-verifier-middleware": "^0.2.1",
+    "body-parser": "^1.16.1",
+    "express": "^4.14.1"
+  }
+}
