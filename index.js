@@ -46,7 +46,7 @@ var handlers = {
     'Greeting': function () {
         console.log("Event: " + JSON.stringify(this.event));
         console.log("Slots: " + JSON.stringify(this.event.request.intent.slots));
-        var name = this.event.request.intent.slots.Name.value;
+        var name = this.event.request.intent.slots.vorname.value;
         console.log(name);
         this.emit(':tell', 'Hallo ' + name);
     }
