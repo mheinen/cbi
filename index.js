@@ -44,8 +44,9 @@ alexaRouter.post('/', function(req, res) {
 // Declare handlers for processing the incoming intents
 var handlers = {
     'Greeting': function () {
-        var name = this.event.request.intent.
-            slots.name.value;
+        console.log("Slots: " + this.event.intent.slots);
+        var name = this.event.request.intent.slots.name.value;
+        console.log(name);
         this.emit(':tell', 'Hallo ' + name);
     }
 };
