@@ -10,7 +10,8 @@ var port = process.env.PORT || 8080;
 // Parse JSON Bodys
 var bodyParser = require('body-parser');
 
-
+// Declare handlers for processing the incoming intents
+var handlers = require('./handlers');
 
 var app = express();
 
@@ -48,8 +49,7 @@ alexaRouter.post('/', function(req, res) {
 });
 
 
-// Declare handlers for processing the incoming intents
-var handlers = require('./handlers');
+
 
 
 app.listen(port, function () {
