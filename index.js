@@ -11,7 +11,7 @@ var port = process.env.PORT || 8080;
 var bodyParser = require('body-parser');
 
 // Declare handlers for processing the incoming intents
-require('./handlers');
+var handler = require('./handlers');
 
 var app = express();
 
@@ -44,7 +44,7 @@ alexaRouter.post('/', function(req, res) {
     };
     // Delegate the request to the Alexa SDK and the declared intent-handlers
     var alexa = Alexa.handler(req.body, context);
-    alexa.registerHandlers(handlers);
+    alexa.registerHandlers(handler.handlers);
     alexa.execute();
 });
 

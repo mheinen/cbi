@@ -1,7 +1,7 @@
 // Configuration of Intent Handler
 // Declare handlers for processing the incoming intents
 var apiConnection = require('./apiConnection');
-exports.handlers = {
+var handlers = {
 
     'Greeting': function () {
         console.log("Event: " + JSON.stringify(this.event));
@@ -14,3 +14,5 @@ exports.handlers = {
         this.emit(':tell', 'Hallo ' + response.nameEins +' und ' + response.nameZwei + '!');
     }
 };
+
+exports.handlers = handlers;
