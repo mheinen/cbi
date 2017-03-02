@@ -7,7 +7,7 @@ var request = require('request');
 //API URL
 var API_URL = 'https://cbiapi.herokuapp.com';
 //var API_URL = 'http://localhost:3000';
-exports.doGreetRequest = function(body, callback) {
+exports.doRequest = function(body, callback) {
 
     request.post(API_URL, {json: body}, function (error, response, body) {
         if (!error && response.statusCode == 200) {
