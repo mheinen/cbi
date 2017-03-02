@@ -9,7 +9,7 @@ var API_URL = 'https://cbiapi.herokuapp.com';
 
 exports.doRequest = function(body) {
     console.log(body);
-    request.post(API_URL, {json: {name: body.name1, lastname: body.name2 }}, function (error, response, body) {
+    request.post(API_URL, {json: {name1: body.name1, name2: body.name2 }}, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             return body;
         }
