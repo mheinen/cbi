@@ -12,7 +12,7 @@ var handlers = {
         var payload = {name1: name1, name2: name2};
         apiConnection.doRequest(payload, function(result) {
                 console.log('Back in Handler');
-                console.log(response);
+                console.log(result);
                 this.emit(':tell', 'Hallo ' + result.nameEins +' und ' + result.nameZwei + '!');
             });
     }
