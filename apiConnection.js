@@ -12,7 +12,7 @@ exports.doRequest = function(body) {
         if (!error && response.statusCode == 200) {
            // console.log(response);
             console.log('Returned from API: '+body);
-            return callback(body);
+            return body;
         }
     });
 
