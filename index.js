@@ -1,10 +1,16 @@
 /**
  * Created by matthias on 01.03.17.
  */
+// Use Express
 var express = require('express');
+
+// Let the Server decide about the port with 8080 as default
 var port = process.env.PORT || 8080;
 
+// Parse JSON Bodys
 var bodyParser = require('body-parser');
+
+
 
 var app = express();
 
@@ -41,32 +47,10 @@ alexaRouter.post('/', function(req, res) {
     alexa.execute();
 });
 
-// Declare handlers for processing the incoming intents
-var handlers = {
-    'Greeting': function () {
-        console.log("Event: " + JSON.stringify(this.event));
-        console.log("Slots: " + JSON.stringify(this.event.request.intent.slots));
-        var name1 = this.event.request.intent.slots.vorname_one.value;
-        var name2 = this.event.request.intent.slots.vorname_two.value;
-        this.emit(':tell', 'Hallo ' + name1 +' und ' + name2 + '!');
-    }
-};
 
-// body holds one of the supported values for the used channel (i.e. ON or OFF) //so dann beispielhaft die rails api aufrufe
-var doRequest = function (body) {
-    var request = new http.ClientRequest({
-        hostname: "127.0.0.1",
-        port: 8080,
-        // Path to the channel for the device we like to control (see REST documentation)
-        path: "/rest/items/minecraft_minecraft_switch_192_168_0_17__9998_88ad955d_ce14_4c78_bb2c_942a64a9da7c_channelPowered",
-        method: "POST",
-        headers: {
-            "Content-Type": "text/plain",
-            "Content-Length": Buffer.byteLength(body)
-        }
-    });
-    request.end(body)
-};
+// Declare handlers for processing the incoming intents
+var handlers = require('./handlers');
+
 
 app.listen(port, function () {
     console.log('Warte auf Anfragen auf port ' + port +'!');
