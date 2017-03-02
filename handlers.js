@@ -10,10 +10,11 @@ var handlers = {
         var name2 = this.event.request.intent.slots.vorname_two.value;
 
         var payload = {name1: name1, name2: name2};
-        var response = apiConnection.doRequest(payload);
-        console.log('Back in Handler');
-        console.log(response);
-        this.emit(':tell', 'Hallo ' + response.nameEins +' und ' + response.nameZwei + '!');
+        apiConnection.doRequest(payload, function(result) {
+                console.log('Back in Handler');
+                console.log(response);
+                this.emit(':tell', 'Hallo ' + result.nameEins +' und ' + result.nameZwei + '!');
+            });
     }
 };
 
