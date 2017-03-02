@@ -1,7 +1,10 @@
 // Configuration of Intent Handler
 // Declare handlers for processing the incoming intents
 var apiConnection = require('./apiConnection');
+var cardTitle = '';
+var cardContent = '';
 var handlers = {
+
 
     'Greeting': function () {
         console.log("Event: " + JSON.stringify(this.event));
@@ -23,9 +26,9 @@ var handlers = {
         var handle = this;
         var payload = { intent: 'Select', tablename: tablename };
         apiConnection.doRequest(payload, function(result) {
-            console.log('Back in Handler');
-            console.log(result);
-            handle.emit(':tell', 'Ich habe ' + result.counter + ' ' + tablename + ' gefunden!');
+            cardTitle = 'Anzeige aller ' + tablename;
+            cardContent = 'Ich habe ' + result.counter + ' ' + tablename + ' gefunden!';
+            handle.emit(':tellWithCard', 'Ich habe ' + result.counter + ' ' + tablename + ' gefunden!');
         });
     }
 };
