@@ -11,7 +11,7 @@ var port = process.env.PORT || 8080;
 var bodyParser = require('body-parser');
 
 // Declare handlers for processing the incoming intents
-var handlers = require('./handlers');
+require('./handlers');
 
 var app = express();
 
