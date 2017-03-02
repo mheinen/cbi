@@ -6,11 +6,12 @@ var request = require('request');
 
 //API URL
 var API_URL = 'https://cbiapi.herokuapp.com';
-
+//var API_URL = 'http://localhost:3000';
 exports.doRequest = function(body) {
-    console.log(body);
     request.post(API_URL, {json: {name1: body.name1, name2: body.name2 }}, function (error, response, body) {
         if (!error && response.statusCode == 200) {
+           // console.log(response);
+            console.log(body);
             return body;
         }
     });

@@ -11,6 +11,8 @@ var handlers = {
 
         var payload = {name1: name1, name2: name2};
         var response = apiConnection.doRequest(payload);
+        console.log('Back in Handler');
+        console.log(response);
         this.emit(':tell', 'Hallo ' + response.nameEins +' und ' + response.nameZwei + '!');
     }
 };

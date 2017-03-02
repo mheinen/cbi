@@ -48,10 +48,13 @@ alexaRouter.post('/', function(req, res) {
     alexa.execute();
 });
 
-
-
-
+// ********** Test ************
+//var apiConnection = require('./apiConnection');
+//var payload = {name1: 'Hans', name2: "Günther"};
+// ********** Test Ende ***********
 
 app.listen(port, function () {
     console.log('Warte auf Anfragen auf port ' + port +'!');
+  //  apiConnection.doRequest(payload);
+
 });
