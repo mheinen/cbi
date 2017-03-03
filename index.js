@@ -96,7 +96,7 @@ var selectStateHandlers = Alexa.CreateStateHandler(STATES.SELECT, {
             "value": this.event.request.intent.slots.value.value
         });
         console.log('Assigned');
-        this.emit('ask', "Möchten Sie noch weitere Einschränkungen vornehmen?", "Bitte mit Ja oder Nein antworten");
+        this.emit(':ask', "Möchten Sie noch weitere Einschränkungen vornehmen?", "Bitte mit Ja oder Nein antworten");
 /*        apiConnection.doRequest(payload, function(result) {
             cardTitle = 'Anzeige aller ' + tablename;
             cardContent = 'Ich habe ' + result.counter + ' ' + tablename + ' gefunden!';
