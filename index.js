@@ -98,7 +98,7 @@ var analysisStateHandlers = Alexa.CreateStateHandler(STATES.ANALYSIS, {
         apiConnection.doRequest(payload, function(result) {
             cardTitle = 'Anzeige aller ' + tablename;
             cardContent = 'Ich habe ' + result.counter + ' ' + tablename + ' gefunden!';
-            handle.emit(':tellWithCard', 'Ich habe ' + result.counter + ' ' + tablename + ' gefunden!', cardTitle, cardContent);
+            handle.emit(':askWithCard', 'Ich habe ' + result.counter + ' ' + tablename + ' gefunden!' + "Haben Sie noch weitere Fragen?", cardTitle, cardContent);
         });
     },
     "AnswerIntent": function () {
