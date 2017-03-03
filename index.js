@@ -88,17 +88,14 @@ var selectStateHandlers = Alexa.CreateStateHandler(STATES.SELECT, {
 
     },
     'Select': function () {
-        var table = this.event.request.intent.slots.table.value;
-        var column = this.event.request.intent.slots.column.value;
-        var operand = this.event.request.intent.slots.operand.value;
-        var value = this.event.request.intent.slots.value.value;
-
+        console.log('Select');
         Object.assign(this.attributes, {
             "table": this.event.request.intent.slots.table.value,
             "column": this.event.request.intent.slots.column.value,
             "operand": this.event.request.intent.slots.operand.value,
-            "value": this.event.request.intent.slots.value.value,
+            "value": this.event.request.intent.slots.value.value
         });
+        console.log('Assigned');
         this.emit('ask', "Möchten Sie noch weitere Einschränkungen vornehmen?", "Bitte mit Ja oder Nein antworten")
 /*        apiConnection.doRequest(payload, function(result) {
             cardTitle = 'Anzeige aller ' + tablename;
