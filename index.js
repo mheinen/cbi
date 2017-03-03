@@ -135,9 +135,9 @@ var selectStateHandlers = Alexa.CreateStateHandler(STATES.SELECT, {
 
             apiConnection.doRequest(payload, function(result) {
                 var number = result == "1" ? "einen" : result + ' ' + handle.attributes["table"];
-                cardTitle = 'Anzeige aller ' + tablename;
+                cardTitle = 'Anzeige aller ' + handle.attributes["table"];
                 cardContent = 'Ich habe ' + number + ' gefunden!';
-                handle.emit(':askWithCard', 'Ich habe ' + number + ' ' + handle.attributes["table"] + ' gefunden!' + "Haben Sie noch weitere Fragen?", cardTitle, cardContent);
+                handle.emit(':askWithCard', 'Ich habe ' + number + ' ' + handle.attributes["table"] + ' gefunden!' + '<break time="1s"/>Haben Sie noch weitere Fragen?', cardTitle, cardContent);
          });
     }
 });
