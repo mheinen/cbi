@@ -147,8 +147,8 @@ var selectStateHandlers = Alexa.CreateStateHandler(STATES.SELECT, {
 var doneStateHandlers = Alexa.CreateStateHandler(STATES.DONE, {
 
     "AMAZON.YesIntent": function() {
-        this.handler.state = STATES.START;
-        var speechOutput = "Wählen Sie Daten bitte aus.";
+        this.handler.state = STATES.SELECT;
+        var speechOutput = "Wählen Sie die Daten bitte aus.";
         this.emit(":ask", speechOutput, speechOutput);
     },
     "AMAZON.NoIntent": function() {
