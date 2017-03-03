@@ -139,7 +139,7 @@ var selectStateHandlers = Alexa.CreateStateHandler(STATES.SELECT, {
                 console.log("Number: " + number);
                 cardTitle = 'Anzeige aller ' + handle.attributes["table"];
                 cardContent = 'Ich habe ' + number + ' gefunden!';
-                this.handler.state = STATES.DONE;
+                handle.handler.state = STATES.DONE;
                 handle.emit(':askWithCard', "Ich habe " + number + ' ' + handle.attributes["table"] + ' gefunden!' + 'Haben Sie noch weitere Fragen?', cardTitle, cardContent);
          });
     }
