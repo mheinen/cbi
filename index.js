@@ -38,6 +38,7 @@ var cardContent = '';
 
 var STATES = {
     SELECT: "_SELECTMODE",
+    DONE: "_DONEMODE",
     ANALYSIS: "_ANALYSISMODE", // Analyze data.
     START: "_STARTMODE", // Entry point.
     HELP: "_HELPMODE" // The user is asking for help.
@@ -142,6 +143,21 @@ var selectStateHandlers = Alexa.CreateStateHandler(STATES.SELECT, {
          });
     }
 });
+var doneStateHandlers = Alexa.CreateStateHandler(STATES.DONE, {
+
+    "AMAZON.YesIntent": function() {
+        this.handler.state = STATES.START;
+        var speechOutput = "Wählen Sie Daten bitte aus.";
+        this.emit(":ask", speechOutput, speechOutput);
+    },
+    "AMAZON.NoIntent": function() {
+        var speechOutput = "Dann bis zum nächsten mal.";
+        this.emit(":tell", speechOutput);
+    },
+    "AMAZON.CancelIntent": function () {
+        this.emit(":tell", "Ok, dann bis später!");
+    }
+});
 
 var helpStateHandlers = Alexa.CreateStateHandler(STATES.HELP, {
     "helpTheUser": function (newAnalysis) {
@@ -204,7 +220,7 @@ alexaRouter.post('/', function(req, res) {
     };
     // Delegate the request to the Alexa SDK and the declared intent-handlers
     var alexa = Alexa.handler(req.body, context);
-    alexa.registerHandlers(newSessionHandlers, startStateHandlers, selectStateHandlers, helpStateHandlers);
+    alexa.registerHandlers(newSessionHandlers, startStateHandlers, selectStateHandlers, helpStateHandlers, doneStateHandlers);
     alexa.execute();
 });
 
