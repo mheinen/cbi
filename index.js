@@ -81,17 +81,12 @@ var startStateHandlers = Alexa.CreateStateHandler(STATES.START, {
 
 var analysisStateHandlers = Alexa.CreateStateHandler(STATES.ANALYSIS, {
     'Greeting': function () {
-        console.log("Event: " + JSON.stringify(this.event));
-        console.log("Slots: " + JSON.stringify(this.event.request.intent.slots));
         var name1 = this.event.request.intent.slots.vorname_one.value;
-        console.log(name1);
         if(name1 != null) this.emit(':ask', 'Hallo ' + name1 +'!');
         else this.emit(':ask', "Ghost!" + "busters!");
 
     },
     'Select': function () {
-        console.log("Event: " + JSON.stringify(this.event));
-        console.log("Slots: " + JSON.stringify(this.event.request.intent.slots));
         var tablename = this.event.request.intent.slots.table.value;
         var column = this.event.request.intent.slots.column.value;
         var operand = this.event.request.intent.slots.operand.value;
