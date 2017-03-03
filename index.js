@@ -85,16 +85,19 @@ var analysisStateHandlers = Alexa.CreateStateHandler(STATES.ANALYSIS, {
         console.log("Slots: " + JSON.stringify(this.event.request.intent.slots));
         var name1 = this.event.request.intent.slots.vorname_one.value;
         console.log(name1);
-        if(name1 != null) this.emit(':tell', 'Hallo ' + name1 +'!');
-        else this.emit(':tell', "Ghostbusters!");
+        if(name1 != null) this.emit(':ask', 'Hallo ' + name1 +'!');
+        else this.emit(':ask', "Ghost!" + "busters!");
 
     },
     'Select': function () {
         console.log("Event: " + JSON.stringify(this.event));
         console.log("Slots: " + JSON.stringify(this.event.request.intent.slots));
-        var tablename = this.event.request.intent.slots.tablename.value;
+        var tablename = this.event.request.intent.slots.table.value;
+        var column = this.event.request.intent.slots.column.value;
+        var operand = this.event.request.intent.slots.operand.value;
+        var value = this.event.request.intent.slots.value.value;
         var handle = this;
-        var payload = { intent: 'Select', tablename: tablename };
+        var payload = { intent: 'Select', tablename: tablename, column: column, operand: operand, value: value };
         apiConnection.doRequest(payload, function(result) {
             cardTitle = 'Anzeige aller ' + tablename;
             cardContent = 'Ich habe ' + result.counter + ' ' + tablename + ' gefunden!';
