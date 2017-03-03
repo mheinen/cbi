@@ -37,6 +37,7 @@ var cardTitle = '';
 var cardContent = '';
 
 var STATES = {
+    SELECT: "_SELECTMODE",
     ANALYSIS: "_ANALYSISMODE", // Analyze data.
     START: "_STARTMODE", // Entry point.
     HELP: "_HELPMODE" // The user is asking for help.
@@ -74,12 +75,12 @@ var startStateHandlers = Alexa.CreateStateHandler(STATES.START, {
         });
 
         // Set the current state to trivia mode. The skill will now use handlers defined in triviaStateHandlers
-        this.handler.state = STATES.ANALYSIS;
+        this.handler.state = STATES.SELECT;
         this.emit(":askWithCard", speechOutput, speechOutput, "Webcomputing", speechOutput);
     }
 });
 
-var analysisStateHandlers = Alexa.CreateStateHandler(STATES.ANALYSIS, {
+var selectStateHandlers = Alexa.CreateStateHandler(STATES.SELECT, {
     'Greeting': function () {
         var name1 = this.event.request.intent.slots.vorname_one.value;
         if(name1 != null) this.emit(':ask', 'Hallo ' + name1 +'!');
@@ -87,34 +88,25 @@ var analysisStateHandlers = Alexa.CreateStateHandler(STATES.ANALYSIS, {
 
     },
     'Select': function () {
-        var tablename = this.event.request.intent.slots.table.value;
+        var table = this.event.request.intent.slots.table.value;
         var column = this.event.request.intent.slots.column.value;
         var operand = this.event.request.intent.slots.operand.value;
         var value = this.event.request.intent.slots.value.value;
-        var handle = this;
-        var payload = { intent: 'Select', tablename: tablename, column: column, operand: operand, value: value };
-        apiConnection.doRequest(payload, function(result) {
+
+        Object.assign(this.attributes, {
+            "table": this.event.request.intent.slots.table.value,
+            "column": this.event.request.intent.slots.column.value,
+            "operand": this.event.request.intent.slots.operand.value,
+            "value": this.event.request.intent.slots.value.value,
+        });
+        this.emit('ask', "Möchten Sie noch weitere Einschränkungen vornehmen?", "Bitte mit Ja oder Nein antworten")
+/*        apiConnection.doRequest(payload, function(result) {
             cardTitle = 'Anzeige aller ' + tablename;
             cardContent = 'Ich habe ' + result.counter + ' ' + tablename + ' gefunden!';
             console.log(result);
-            console.log('**************************');
-            console.log(JSON.stringify(result));
-            console.log('**************************');
+            handle.emit('ask', "Möchten Sie noch weitere Einschränkungen vornehmen?", "Bitte mit Ja oder Nein antworten")
     //        handle.emit(':askWithCard', 'Ich habe ' + result.counter + ' ' + tablename + ' gefunden!' + "Haben Sie noch weitere Fragen?", cardTitle, cardContent);
-        });
-    },
-    "AnswerIntent": function () {
-        handleUserGuess.call(this, false);
-    },
-    "DontKnowIntent": function () {
-        handleUserGuess.call(this, true);
-    },
-    "AMAZON.StartOverIntent": function () {
-        this.handler.state = STATES.START;
-        this.emitWithState("StartGame", false);
-    },
-    "AMAZON.RepeatIntent": function () {
-        this.emit(":ask", "Geben Sie mir eine Aufgabe!", this.attributes["speechOutput"]);
+        });*/
     },
     "AMAZON.HelpIntent": function () {
         this.handler.state = STATES.HELP;
@@ -136,18 +128,21 @@ var analysisStateHandlers = Alexa.CreateStateHandler(STATES.ANALYSIS, {
         console.log("Session ended in analysis state: " + this.event.request.reason);
     },
     "AMAZON.YesIntent": function() {
-        if (this.attributes["speechOutput"]) {
-            this.handler.state = STATES.ANALYSIS;
-            this.emitWithState("AMAZON.RepeatIntent");
-        } else {
-            this.handler.state = STATES.START;
-            this.emitWithState("StartGame", false);
-        }
+        this.handler.state = STATES.GROUPING;
+        this.emitWithState("ChooseGrouping");
     },
     "AMAZON.NoIntent": function() {
-        var speechOutput = "Dann noch einen schönen Tag!";
-        this.emit(":tell", speechOutput);
-    },
+        var handle = this;
+        var payload = { intent: 'Select', tablename: this.attributes["table"], column: this.attributes["column"],
+            operand: this.attributes["operand"], value: this.attributes["value"] };
+
+            apiConnection.doRequest(payload, function(result) {
+                var number = result == "1" ? "einen" : result + ' ' + tablename;
+                cardTitle = 'Anzeige aller ' + tablename;
+                cardContent = 'Ich habe ' + number + ' gefunden!';
+                handle.emit(':askWithCard', 'Ich habe ' + number + ' ' + tablename + ' gefunden!' + "Haben Sie noch weitere Fragen?", cardTitle, cardContent);
+         });
+    }
 });
 
 var helpStateHandlers = Alexa.CreateStateHandler(STATES.HELP, {
@@ -211,7 +206,7 @@ alexaRouter.post('/', function(req, res) {
     };
     // Delegate the request to the Alexa SDK and the declared intent-handlers
     var alexa = Alexa.handler(req.body, context);
-    alexa.registerHandlers(newSessionHandlers, startStateHandlers, analysisStateHandlers, helpStateHandlers);
+    alexa.registerHandlers(newSessionHandlers, startStateHandlers, selectStateHandlers, helpStateHandlers);
     alexa.execute();
 });
 
