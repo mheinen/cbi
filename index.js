@@ -134,10 +134,11 @@ var selectStateHandlers = Alexa.CreateStateHandler(STATES.SELECT, {
             operand: this.attributes["operand"], value: this.attributes["value"] };
 
             apiConnection.doRequest(payload, function(result) {
-                var number = result == "1" ? "einen" : result + ' ' + handle.attributes["table"];
+                var number = result.counter == "1" ? "einen" : result.counter;
+                console.log("Number: " + number);
                 cardTitle = 'Anzeige aller ' + handle.attributes["table"];
                 cardContent = 'Ich habe ' + number + ' gefunden!';
-                handle.emit(':askWithCard', 'Ich habe ' + number + ' ' + handle.attributes["table"] + ' gefunden!' + '<break time="1s"/>Haben Sie noch weitere Fragen?', cardTitle, cardContent);
+                handle.emit(':askWithCard', "Ich habe " + number + ' ' + handle.attributes["table"] + ' gefunden!' + 'Haben Sie noch weitere Fragen?', cardTitle, cardContent);
          });
     }
 });
