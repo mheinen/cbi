@@ -112,7 +112,7 @@ var analysisStateHandlers = Alexa.CreateStateHandler(STATES.ANALYSIS, {
         this.emitWithState("StartGame", false);
     },
     "AMAZON.RepeatIntent": function () {
-        this.emit(":ask", this.attributes["speechOutput"], this.attributes["speechOutput"]);
+        this.emit(":ask", "Geben Sie mir eine Aufgabe!", this.attributes["speechOutput"]);
     },
     "AMAZON.HelpIntent": function () {
         this.handler.state = STATES.HELP;
@@ -132,7 +132,20 @@ var analysisStateHandlers = Alexa.CreateStateHandler(STATES.ANALYSIS, {
     },
     "SessionEndedRequest": function () {
         console.log("Session ended in analysis state: " + this.event.request.reason);
-    }
+    },
+    "AMAZON.YesIntent": function() {
+        if (this.attributes["speechOutput"]) {
+            this.handler.state = STATES.ANALYSIS;
+            this.emitWithState("AMAZON.RepeatIntent");
+        } else {
+            this.handler.state = STATES.START;
+            this.emitWithState("StartGame", false);
+        }
+    },
+    "AMAZON.NoIntent": function() {
+        var speechOutput = "Dann noch einen schönen Tag!";
+        this.emit(":tell", speechOutput);
+    },
 });
 
 var helpStateHandlers = Alexa.CreateStateHandler(STATES.HELP, {
