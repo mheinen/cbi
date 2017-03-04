@@ -98,14 +98,7 @@ var selectStateHandlers = Alexa.CreateStateHandler(STATES.SELECT, {
             "value": this.event.request.intent.slots.value.value
         });
         console.log('Assigned');
-        this.emit(':ask', "Möchten Sie noch weitere Einschränkungen vornehmen?", "Bitte mit Ja oder Nein antworten");
-        /*        apiConnection.doRequest(payload, function(result) {
-         cardTitle = 'Anzeige aller ' + tablename;
-         cardContent = 'Ich habe ' + result.counter + ' ' + tablename + ' gefunden!';
-         console.log(result);
-         handle.emit('ask', "Möchten Sie noch weitere Einschränkungen vornehmen?", "Bitte mit Ja oder Nein antworten")
-         //        handle.emit(':askWithCard', 'Ich habe ' + result.counter + ' ' + tablename + ' gefunden!' + "Haben Sie noch weitere Fragen?", cardTitle, cardContent);
-         });*/
+        this.emit(':ask', this.t('START_GROUPING'), this.t('START_GROUPING_REPEAT'));
     },
     "AMAZON.HelpIntent": function () {
         this.handler.state = STATES.HELP;
