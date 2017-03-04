@@ -55,15 +55,14 @@ var newSessionHandlers = {
     },
     "AMAZON.StartOverIntent": function() {
         this.handler.state = STATES.START;
-        this.emitWithState("StartSelection", true);
+        this.emitWithState("StartSelection", false);
     },
     "AMAZON.HelpIntent": function() {
         this.handler.state = STATES.HELP;
         this.emitWithState("helpTheUser", true);
     },
     "Unhandled": function () {
-        var speechOutput = 'Ich habe dich leider nicht verstanden!';
-        this.emit(":ask", speechOutput, speechOutput);
+        this.emit(":ask", this.t('DIN_NOT_UNDERSTAND'), this.t('DIN_NOT_UNDERSTAND'));
     }
 };
 
@@ -71,24 +70,13 @@ var startStateHandlers = Alexa.CreateStateHandler(STATES.START, {
     "StartSelection": function (newAnalysis) {
         var speechOutput = newAnalysis ? this.t('WELCOME_MESSAGE') : "";
 
-        // Test persisted Skill attributes
-        Object.assign(this.attributes, {
-            "speechOutput": speechOutput,
-        });
-
         // Set the current state to trivia mode. The skill will now use handlers defined in triviaStateHandlers
         this.handler.state = STATES.SELECT;
-        this.emit(":askWithCard", speechOutput, speechOutput, "Webcomputing", speechOutput);
+        this.emit(":ask", speechOutput, speechOutput);
     }
 });
 
 var selectStateHandlers = Alexa.CreateStateHandler(STATES.SELECT, {
-    'Greeting': function () {
-        var name1 = this.event.request.intent.slots.vorname_one.value;
-        if(name1 != null) this.emit(':ask', 'Hallo ' + name1 +'!');
-        else this.emit(':ask', "Ghost!" + "busters!");
-
-    },
     'Select': function () {
         console.log('Select');
         Object.assign(this.attributes, {
@@ -102,7 +90,7 @@ var selectStateHandlers = Alexa.CreateStateHandler(STATES.SELECT, {
     },
     "AMAZON.HelpIntent": function () {
         this.handler.state = STATES.HELP;
-        this.emitWithState("helpTheUser", false);
+        this.emitWithState("helpSelect");
     },
     "AMAZON.StopIntent": function () {
         this.handler.state = STATES.HELP;
@@ -155,11 +143,10 @@ var doneStateHandlers = Alexa.CreateStateHandler(STATES.DONE, {
 });
 
 var helpStateHandlers = Alexa.CreateStateHandler(STATES.HELP, {
-    "helpTheUser": function (newAnalysis) {
-        var askMessage = newAnalysis ? "Möchten Sie beginnen?" : "Zum wiederholen der letzten Frage, sage Wiederholen" + "Möchten Sie weitermachen?";
-        var speechOutput = "Ich biete ihnen die Möglichkeit per Spracheingabe Ihre Daten zu analysieren" + askMessage;
-        var repromptText = "Sage einfach etwas wie" + "zeige mir alle Kunden mit Umsatz größer 1000" + askMessage;
-        this.emit(":ask", speechOutput, repromptText);
+    "helpSelect": function () {
+        var speechOutput = this.t('HELP_SELECT');
+        this.handler.state = STATES.SELECT;
+        this.emit(":ask", speechOutput, speechOutput);
     },
     "AMAZON.StartOverIntent": function () {
         this.handler.state = STATES.START;

@@ -8,10 +8,11 @@ var languageString = {
             "WELCOME_MESSAGE" : "Willkommen bei Webcomputing!",
             "START_GROUPING" : "Wollen Sie die Daten noch zusammenfassen?",
             "START_GROUPING_REPEAT" : "Daten zusammenfassen? <break time='1s'/>Ja oder Nein?",
-            "HELP_MESSAGE": "Ich stelle dir %s Multiple-Choice-Fragen. Antworte mit der Zahl, die zur richtigen Antwort gehört. " +
-            "Sage beispielsweise eins, zwei, drei oder vier. Du kannst jederzeit ein neues Spiel beginnen, sage einfach „Spiel starten“. ",
-            "REPEAT_QUESTION_MESSAGE": "Wenn die letzte Frage wiederholt werden soll, sage „Wiederholen“ ",
-            "ASK_MESSAGE_START": "Möchten Sie beginnen?",
+            "DIN_NOT_UNDERSTAND": "Ich habe Sie leider nicht verstanden!",
+            "HELP_SELECT": "Sagen Sie beispielsweise <break time='500ms'/> Zeige mir alle Kunden mit Umsatz größer hundert"+
+            "<break time='500ms'/> Wobei Kunden der Name der Tabelle oder des <say-as interpret-as='characters'>csv</say-as> " +
+            "ist und Umsatz der Name der Spalte",
+            "HELP": "Möchten Sie beginnen?",
             "HELP_REPROMPT": "Wenn du eine Frage beantworten willst, antworte mit der Zahl, die zur richtigen Antwort gehört. ",
             "STOP_MESSAGE": "Möchtest du weiterspielen?",
             "CANCEL_MESSAGE": "OK, dann lass uns bald mal wieder spielen.",
