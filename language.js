@@ -19,8 +19,7 @@ var languageString = {
             "HELP_GROUPING": "Sagen Sie beispielsweise <break time='200ms'/> Zusammenfassen nach Umsatz, <break time='200ms'/>" +
             "um den Umsatz zusammenzufassen. Sie können auch mit <break time='200ms'/> Bilde Cluster  <break time='200ms'/>" +
             "Ihre Daten zu Clustern zusammenfassen.",
-            "TRIVIA_UNHANDLED": "Sagt eine Zahl beispielsweise zwischen 1 und %s",
-            "HELP_UNHANDLED": "Sage ja, um fortzufahren, oder nein, um das Spiel zu beenden.",
+            "WITH_GRAPHS": "Soll eine graphische Representation erzeugt werden?",
             "START_UNHANDLED": "Du kannst jederzeit ein neues Spiel beginnen, sage einfach „Spiel starten“.",
             "NEW_GAME_MESSAGE": "Willkommen bei %s. ",
             "ANSWER_CORRECT_MESSAGE": "Richtig. ",

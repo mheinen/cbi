@@ -41,6 +41,7 @@ var STATES = {
     SELECT: "_SELECTMODE",
     ABORT: "_ABORTMODE",
     DONE: "_DONEMODE",
+    GRAPH: "_GRAPHMODE",
     GROUPING: "_GROUPINGMODE",
     ANALYSIS: "_ANALYSISMODE", // Analyze data.
     START: "_STARTMODE", // Entry point.
@@ -135,18 +136,45 @@ var groupingStateHandlers = Alexa.CreateStateHandler(STATES.GROUPING, {
         var speechOutput = this.t('GROUPING');
         this.emit(":ask", speechOutput, speechOutput);
     },
+    'Group': function () {
+        Object.assign(this.attributes, {
+            "groupColumn": this.event.request.intent.slots.column.value
+        });
+        this.emit(':ask', this.t('WITH_GRAPHS'), this.t('WITH_GRAPHS'));
+    },
     "AMAZON.HelpIntent": function () {
         this.handler.state = STATES.HELP;
         this.emitWithState("helpGrouping");
     },
     "AMAZON.YesIntent": function() {
-        this.handler.state = STATES.SELECT;
-        var speechOutput = this.t('ANOTHER_SELECT');
-        this.emit(":ask", speechOutput, speechOutput);
+        var handle = this;
+        var payload = { intent: 'GroupWithGraph', tablename: this.attributes["table"], column: this.attributes["column"],
+            operand: this.attributes["operand"], value: this.attributes["value"],
+            groupColumn: this.attributes["groupColumn"] };
+
+        apiConnection.doRequest(payload, function(result) {
+            var number = result.counter == "1" ? "einen" : result.counter;
+            console.log("Number: " + number);
+            cardTitle = 'Anzeige aller ' + handle.attributes["table"];
+            cardContent = 'Ich habe ' + number + ' gefunden!';
+            handle.handler.state = STATES.DONE;
+            handle.emit(':askWithCard', "Ich habe " + number + ' ' + handle.attributes["table"] + ' gefunden!' + 'Haben Sie noch weitere Fragen?', cardTitle, cardContent);
+        });
     },
     "AMAZON.NoIntent": function() {
-        var speechOutput = this.t('END_SESSION');
-        this.emit(":tell", speechOutput);
+        var handle = this;
+        var payload = { intent: 'Group', tablename: this.attributes["table"], column: this.attributes["column"],
+            operand: this.attributes["operand"], value: this.attributes["value"],
+            groupColumn: this.attributes["groupColumn"] };
+
+        apiConnection.doRequest(payload, function(result) {
+            var number = result.counter == "1" ? "einen" : result.counter;
+            console.log("Number: " + number);
+            cardTitle = 'Anzeige aller ' + handle.attributes["table"];
+            cardContent = 'Ich habe ' + number + ' gefunden!';
+            handle.handler.state = STATES.DONE;
+            handle.emit(':askWithCard', "Ich habe " + number + ' ' + handle.attributes["table"] + ' gefunden!' + 'Haben Sie noch weitere Fragen?', cardTitle, cardContent);
+        });
     },
     "AMAZON.StopIntent": function () {
         this.handler.state = STATES.ABORT;
