@@ -207,7 +207,6 @@ alexaRouter.get('/', function (req, res) {
     res.end("hello world\n");
 });
 alexaRouter.post('/', function(req, res) {
-    console.log(req);
     // Build the context manually, because Amazon Lambda is missing and alexa-sdk normally requires it
     var context = {
         succeed: function (result) {
