@@ -4,7 +4,7 @@
 // Use Express
 var express = require('express');
 
-// Let the Server decide about the port with 8080 as default
+// Let the Server decide about the port with 8000 as default
 var port = process.env.PORT || 8080;
 
 // Parse JSON Bodys
@@ -28,7 +28,8 @@ alexaRouter.use(verifier);
 
 alexaRouter.use(bodyParser.json());
 
-
+// Import language resource
+var languageString = require("./language").language;
 
 // Configuration of Intent Handler
 // Declare handlers for processing the incoming intents
@@ -50,11 +51,11 @@ var newSessionHandlers = {
 
     "LaunchRequest": function () {
         this.handler.state = STATES.START;
-        this.emitWithState("StartAnalysis", true);
+        this.emitWithState("StartSelection", true);
     },
     "AMAZON.StartOverIntent": function() {
         this.handler.state = STATES.START;
-        this.emitWithState("StartAnalysis", true);
+        this.emitWithState("StartSelection", true);
     },
     "AMAZON.HelpIntent": function() {
         this.handler.state = STATES.HELP;
@@ -67,8 +68,8 @@ var newSessionHandlers = {
 };
 
 var startStateHandlers = Alexa.CreateStateHandler(STATES.START, {
-    "StartAnalysis": function (newAnalysis) {
-        var speechOutput = newAnalysis ? "Willkommen bei Webcomputing. Wir helfen dir bei der Analyse deiner Daten!" : "";
+    "StartSelection": function (newAnalysis) {
+        var speechOutput = newAnalysis ? this.t('WELCOME_MESSAGE') : "";
 
         // Test persisted Skill attributes
         Object.assign(this.attributes, {
@@ -98,13 +99,13 @@ var selectStateHandlers = Alexa.CreateStateHandler(STATES.SELECT, {
         });
         console.log('Assigned');
         this.emit(':ask', "Möchten Sie noch weitere Einschränkungen vornehmen?", "Bitte mit Ja oder Nein antworten");
-/*        apiConnection.doRequest(payload, function(result) {
-            cardTitle = 'Anzeige aller ' + tablename;
-            cardContent = 'Ich habe ' + result.counter + ' ' + tablename + ' gefunden!';
-            console.log(result);
-            handle.emit('ask', "Möchten Sie noch weitere Einschränkungen vornehmen?", "Bitte mit Ja oder Nein antworten")
-    //        handle.emit(':askWithCard', 'Ich habe ' + result.counter + ' ' + tablename + ' gefunden!' + "Haben Sie noch weitere Fragen?", cardTitle, cardContent);
-        });*/
+        /*        apiConnection.doRequest(payload, function(result) {
+         cardTitle = 'Anzeige aller ' + tablename;
+         cardContent = 'Ich habe ' + result.counter + ' ' + tablename + ' gefunden!';
+         console.log(result);
+         handle.emit('ask', "Möchten Sie noch weitere Einschränkungen vornehmen?", "Bitte mit Ja oder Nein antworten")
+         //        handle.emit(':askWithCard', 'Ich habe ' + result.counter + ' ' + tablename + ' gefunden!' + "Haben Sie noch weitere Fragen?", cardTitle, cardContent);
+         });*/
     },
     "AMAZON.HelpIntent": function () {
         this.handler.state = STATES.HELP;
@@ -134,14 +135,14 @@ var selectStateHandlers = Alexa.CreateStateHandler(STATES.SELECT, {
         var payload = { intent: 'Select', tablename: this.attributes["table"], column: this.attributes["column"],
             operand: this.attributes["operand"], value: this.attributes["value"] };
 
-            apiConnection.doRequest(payload, function(result) {
-                var number = result.counter == "1" ? "einen" : result.counter;
-                console.log("Number: " + number);
-                cardTitle = 'Anzeige aller ' + handle.attributes["table"];
-                cardContent = 'Ich habe ' + number + ' gefunden!';
-                handle.handler.state = STATES.DONE;
-                handle.emit(':askWithCard', "Ich habe " + number + ' ' + handle.attributes["table"] + ' gefunden!' + 'Haben Sie noch weitere Fragen?', cardTitle, cardContent);
-         });
+        apiConnection.doRequest(payload, function(result) {
+            var number = result.counter == "1" ? "einen" : result.counter;
+            console.log("Number: " + number);
+            cardTitle = 'Anzeige aller ' + handle.attributes["table"];
+            cardContent = 'Ich habe ' + number + ' gefunden!';
+            handle.handler.state = STATES.DONE;
+            handle.emit(':askWithCard', "Ich habe " + number + ' ' + handle.attributes["table"] + ' gefunden!' + 'Haben Sie noch weitere Fragen?', cardTitle, cardContent);
+        });
     }
 });
 var doneStateHandlers = Alexa.CreateStateHandler(STATES.DONE, {
@@ -208,7 +209,12 @@ var helpStateHandlers = Alexa.CreateStateHandler(STATES.HELP, {
     }
 });
 
+alexaRouter.get('/', function (req, res) {
+    res.writeHead(200);
+    res.end("hello world\n");
+});
 alexaRouter.post('/', function(req, res) {
+    console.log(req);
     // Build the context manually, because Amazon Lambda is missing and alexa-sdk normally requires it
     var context = {
         succeed: function (result) {
@@ -221,6 +227,7 @@ alexaRouter.post('/', function(req, res) {
     };
     // Delegate the request to the Alexa SDK and the declared intent-handlers
     var alexa = Alexa.handler(req.body, context);
+    alexa.resources = languageString;
     alexa.registerHandlers(newSessionHandlers, startStateHandlers, selectStateHandlers, helpStateHandlers, doneStateHandlers);
     alexa.execute();
 });
@@ -229,9 +236,8 @@ alexaRouter.post('/', function(req, res) {
 //var apiConnection = require('./apiConnection');
 //var payload = {name1: 'Hans', name2: "Günther"};
 // ********** Test Ende ***********
+ app.listen(port, function () {
+ console.log('Warte auf Anfragen auf port ' + port +'!');
+ //  apiConnection.doRequest(payload);
 
-app.listen(port, function () {
-    console.log('Warte auf Anfragen auf port ' + port +'!');
-  //  apiConnection.doRequest(payload);
-
-});
+ });
