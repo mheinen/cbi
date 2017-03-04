@@ -39,7 +39,9 @@ var cardContent = '';
 
 var STATES = {
     SELECT: "_SELECTMODE",
+    ABORT: "_ABORTMODE",
     DONE: "_DONEMODE",
+    GROUPING: "_GROUPINGMODE",
     ANALYSIS: "_ANALYSISMODE", // Analyze data.
     START: "_STARTMODE", // Entry point.
     HELP: "_HELPMODE" // The user is asking for help.
@@ -93,12 +95,14 @@ var selectStateHandlers = Alexa.CreateStateHandler(STATES.SELECT, {
         this.emitWithState("helpSelect");
     },
     "AMAZON.StopIntent": function () {
-        this.handler.state = STATES.HELP;
-        var speechOutput = "Analyse beenden?";
+        this.handler.state = STATES.ABORT;
+        var speechOutput = this.t('END_QUESTION');
         this.emit(":ask", speechOutput, speechOutput);
     },
     "AMAZON.CancelIntent": function () {
-        this.emit(":tell", "Auf wiedersehen!");
+        this.handler.state = STATES.ABORT;
+        var speechOutput = this.t('END_QUESTION');
+        this.emit(":ask", speechOutput, speechOutput);
     },
     "Unhandled": function () {
         var speechOutput = "Ich habe dich leider nicht verstanden";
@@ -130,8 +134,19 @@ var doneStateHandlers = Alexa.CreateStateHandler(STATES.DONE, {
 
     "AMAZON.YesIntent": function() {
         this.handler.state = STATES.SELECT;
-        var speechOutput = "Wählen Sie die Daten bitte aus.";
+        var speechOutput = this.t('ANOTHER_SELECT');
         this.emit(":ask", speechOutput, speechOutput);
+    },
+    "AMAZON.NoIntent": function() {
+        var speechOutput = this.t('END_SESSION');
+        this.emit(":tell", speechOutput);
+    }
+});
+var abortStateHandlers = Alexa.CreateStateHandler(STATES.ABORT, {
+
+    "AMAZON.YesIntent": function() {
+        var speechOutput = this.t('END_SESSION');
+        this.emit(":tell", speechOutput);
     },
     "AMAZON.NoIntent": function() {
         var speechOutput = "Dann bis zum nächsten mal.";
@@ -207,7 +222,8 @@ alexaRouter.post('/', function(req, res) {
     // Delegate the request to the Alexa SDK and the declared intent-handlers
     var alexa = Alexa.handler(req.body, context);
     alexa.resources = languageString;
-    alexa.registerHandlers(newSessionHandlers, startStateHandlers, selectStateHandlers, helpStateHandlers, doneStateHandlers);
+    alexa.registerHandlers(newSessionHandlers, startStateHandlers, selectStateHandlers,
+        helpStateHandlers, doneStateHandlers, abortStateHandlers);
     alexa.execute();
 });
 

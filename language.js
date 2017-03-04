@@ -12,9 +12,9 @@ var languageString = {
             "HELP_SELECT": "Sagen Sie beispielsweise <break time='500ms'/> Zeige mir alle Kunden mit Umsatz größer hundert"+
             "<break time='500ms'/> Wobei Kunden der Name der Tabelle oder des <say-as interpret-as='characters'>csv</say-as> " +
             "ist und Umsatz der Name der Spalte",
-            "HELP": "Möchten Sie beginnen?",
-            "HELP_REPROMPT": "Wenn du eine Frage beantworten willst, antworte mit der Zahl, die zur richtigen Antwort gehört. ",
-            "STOP_MESSAGE": "Möchtest du weiterspielen?",
+            "END_SESSION": "Dann bis zum nächsten mal!",
+            "END_QUESTION": "Analyse beenden?",
+            "ANOTHER_SELECT": "Wählen Sie bitte die neuen Daten aus",
             "CANCEL_MESSAGE": "OK, dann lass uns bald mal wieder spielen.",
             "NO_MESSAGE": "OK, spielen wir ein andermal. Auf Wiedersehen!",
             "TRIVIA_UNHANDLED": "Sagt eine Zahl beispielsweise zwischen 1 und %s",
