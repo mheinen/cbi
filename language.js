@@ -15,8 +15,10 @@ var languageString = {
             "END_SESSION": "Dann bis zum nächsten mal!",
             "END_QUESTION": "Analyse beenden?",
             "ANOTHER_SELECT": "Wählen Sie bitte die neuen Daten aus",
-            "CANCEL_MESSAGE": "OK, dann lass uns bald mal wieder spielen.",
-            "NO_MESSAGE": "OK, spielen wir ein andermal. Auf Wiedersehen!",
+            "GROUPING": "Wählen Sie die Art der Zusammenfassung und  gegebenenfalls die Spalte.",
+            "HELP_GROUPING": "Sagen Sie beispielsweise <break time='200ms'/> Zusammenfassen nach Umsatz, <break time='200ms'/>" +
+            "um den Umsatz zusammenzufassen. Sie können auch mit <break time='200ms'/> Bilde Cluster  <break time='200ms'/>" +
+            "Ihre Daten zu Clustern zusammenfassen.",
             "TRIVIA_UNHANDLED": "Sagt eine Zahl beispielsweise zwischen 1 und %s",
             "HELP_UNHANDLED": "Sage ja, um fortzufahren, oder nein, um das Spiel zu beenden.",
             "START_UNHANDLED": "Du kannst jederzeit ein neues Spiel beginnen, sage einfach „Spiel starten“.",

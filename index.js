@@ -113,7 +113,7 @@ var selectStateHandlers = Alexa.CreateStateHandler(STATES.SELECT, {
     },
     "AMAZON.YesIntent": function() {
         this.handler.state = STATES.GROUPING;
-        this.emitWithState("ChooseGrouping");
+        this.emitWithState("chooseGrouping");
     },
     "AMAZON.NoIntent": function() {
         var handle = this;
@@ -128,6 +128,35 @@ var selectStateHandlers = Alexa.CreateStateHandler(STATES.SELECT, {
             handle.handler.state = STATES.DONE;
             handle.emit(':askWithCard', "Ich habe " + number + ' ' + handle.attributes["table"] + ' gefunden!' + 'Haben Sie noch weitere Fragen?', cardTitle, cardContent);
         });
+    }
+});
+var groupingStateHandlers = Alexa.CreateStateHandler(STATES.GROUPING, {
+    "chooseGrouping": function () {
+        var speechOutput = this.t('GROUPING');
+        this.emit(":ask", speechOutput, speechOutput);
+    },
+    "AMAZON.HelpIntent": function () {
+        this.handler.state = STATES.HELP;
+        this.emitWithState("helpGrouping");
+    },
+    "AMAZON.YesIntent": function() {
+        this.handler.state = STATES.SELECT;
+        var speechOutput = this.t('ANOTHER_SELECT');
+        this.emit(":ask", speechOutput, speechOutput);
+    },
+    "AMAZON.NoIntent": function() {
+        var speechOutput = this.t('END_SESSION');
+        this.emit(":tell", speechOutput);
+    },
+    "AMAZON.StopIntent": function () {
+        this.handler.state = STATES.ABORT;
+        var speechOutput = this.t('END_QUESTION');
+        this.emit(":ask", speechOutput, speechOutput);
+    },
+    "AMAZON.CancelIntent": function () {
+        this.handler.state = STATES.ABORT;
+        var speechOutput = this.t('END_QUESTION');
+        this.emit(":ask", speechOutput, speechOutput);
     }
 });
 var doneStateHandlers = Alexa.CreateStateHandler(STATES.DONE, {
@@ -149,11 +178,9 @@ var abortStateHandlers = Alexa.CreateStateHandler(STATES.ABORT, {
         this.emit(":tell", speechOutput);
     },
     "AMAZON.NoIntent": function() {
-        var speechOutput = "Dann bis zum nächsten mal.";
-        this.emit(":tell", speechOutput);
-    },
-    "AMAZON.CancelIntent": function () {
-        this.emit(":tell", "Ok, dann bis später!");
+        var speechOutput = this.t('ANOTHER_SELECT');
+        this.handler.state = STATES.SELECT;
+        this.emit(":ask", speechOutput, speechOutput);
     }
 });
 
@@ -163,37 +190,14 @@ var helpStateHandlers = Alexa.CreateStateHandler(STATES.HELP, {
         this.handler.state = STATES.SELECT;
         this.emit(":ask", speechOutput, speechOutput);
     },
+    "helpGrouping": function () {
+        var speechOutput = this.t('HELP_GROUPING');
+        this.handler.state = STATES.GROUPING;
+        this.emit(":ask", speechOutput, speechOutput);
+    },
     "AMAZON.StartOverIntent": function () {
         this.handler.state = STATES.START;
         this.emitWithState("StartGame", false);
-    },
-    "AMAZON.RepeatIntent": function () {
-        var newAnalysis = (this.attributes["speechOutput"] && this.attributes["speechOutput"]) ? false : true;
-        this.emitWithState("helpTheUser", newAnalysis);
-    },
-    "AMAZON.HelpIntent": function() {
-        var newAnalysis = (this.attributes["speechOutput"] && this.attributes["speechOutput"]) ? false : true;
-        this.emitWithState("helpTheUser", newAnalysis);
-    },
-    "AMAZON.YesIntent": function() {
-        if (this.attributes["speechOutput"] && this.attributes["speechOutput"]) {
-            this.handler.state = STATES.ANALYSIS;
-            this.emitWithState("AMAZON.RepeatIntent");
-        } else {
-            this.handler.state = STATES.START;
-            this.emitWithState("StartGame", false);
-        }
-    },
-    "AMAZON.NoIntent": function() {
-        var speechOutput = "Dann setzen wir die Analyse später fort.";
-        this.emit(":tell", speechOutput);
-    },
-    "AMAZON.StopIntent": function () {
-        var speechOutput = "Möchten Sie weitermachen?";
-        this.emit(":ask", speechOutput, speechOutput);
-    },
-    "AMAZON.CancelIntent": function () {
-        this.emit(":tell", "Ok, dann bis später!");
     },
     "Unhandled": function () {
         var speechOutput = "Sage ja, um fortzufahren. Sage nein, um zu beenden.";
@@ -223,7 +227,7 @@ alexaRouter.post('/', function(req, res) {
     var alexa = Alexa.handler(req.body, context);
     alexa.resources = languageString;
     alexa.registerHandlers(newSessionHandlers, startStateHandlers, selectStateHandlers,
-        helpStateHandlers, doneStateHandlers, abortStateHandlers);
+        helpStateHandlers, doneStateHandlers, abortStateHandlers, groupingStateHandlers);
     alexa.execute();
 });
 
