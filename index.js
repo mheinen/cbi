@@ -139,7 +139,14 @@ var groupingStateHandlers = Alexa.CreateStateHandler(STATES.GROUPING, {
     },
     'Group': function () {
         Object.assign(this.attributes, {
+            "kind": "group",
             "groupColumn": this.event.request.intent.slots.column.value
+        });
+        this.emit(':ask', this.t('WITH_GRAPHS'), this.t('WITH_GRAPHS'));
+    },
+    'Cluster': function () {
+        Object.assign(this.attributes, {
+            "kind": "cluster"
         });
         this.emit(':ask', this.t('WITH_GRAPHS'), this.t('WITH_GRAPHS'));
     },
@@ -151,7 +158,7 @@ var groupingStateHandlers = Alexa.CreateStateHandler(STATES.GROUPING, {
         var handle = this;
         var payload = { intent: 'GroupWithGraph', tablename: this.attributes["table"], column: this.attributes["column"],
             operand: this.attributes["operand"], value: this.attributes["value"],
-            groupColumn: this.attributes["groupColumn"] };
+            groupColumn: this.attributes["groupColumn"], kind: this.attributes["kind"] };
 
         apiConnection.doRequest(payload, function(result) {
             var number = result.counter == "1" ? "einen" : result.counter;
@@ -166,7 +173,7 @@ var groupingStateHandlers = Alexa.CreateStateHandler(STATES.GROUPING, {
         var handle = this;
         var payload = { intent: 'Group', tablename: this.attributes["table"], column: this.attributes["column"],
             operand: this.attributes["operand"], value: this.attributes["value"],
-            groupColumn: this.attributes["groupColumn"] };
+            groupColumn: this.attributes["groupColumn"], kind: this.attributes["kind"] };
 
         apiConnection.doRequest(payload, function(result) {
             var number = result.counter == "1" ? "einen" : result.counter;
