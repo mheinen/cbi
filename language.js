@@ -8,7 +8,7 @@ var languageString = {
             "WELCOME_MESSAGE" : "Willkommen bei Webcomputing!",
             "START_GROUPING" : "Wollen Sie die Daten noch zusammenfassen?",
             "START_GROUPING_REPEAT" : "Daten zusammenfassen? <break time='1s'/>Ja oder Nein?",
-            "DIN_NOT_UNDERSTAND": "Ich habe Sie leider nicht verstanden!",
+            "DID_NOT_UNDERSTAND": "Ich habe Sie leider nicht verstanden!",
             "HELP_SELECT": "Sagen Sie beispielsweise <break time='500ms'/> Zeige mir alle Kunden mit Umsatz größer hundert"+
             "<break time='500ms'/> Wobei Kunden der Name der Tabelle oder des <say-as interpret-as='characters'>csv</say-as> " +
             "ist und Umsatz der Name der Spalte",
@@ -19,7 +19,7 @@ var languageString = {
             "HELP_GROUPING": "Sagen Sie beispielsweise <break time='200ms'/> Zusammenfassen nach Umsatz, <break time='200ms'/>" +
             "um den Umsatz zusammenzufassen. Sie können auch mit <break time='200ms'/> Bilde Cluster  <break time='200ms'/>" +
             "Ihre Daten zu Clustern zusammenfassen.",
-            "WITH_GRAPHS": "Soll eine graphische Representation erzeugt werden?",
+            "WITH_GRAPHS": "Soll eine graphische Repräsentation erzeugt werden?",
             "START_UNHANDLED": "Du kannst jederzeit ein neues Spiel beginnen, sage einfach „Spiel starten“.",
             "NEW_GAME_MESSAGE": "Willkommen bei %s. ",
             "ANSWER_CORRECT_MESSAGE": "Richtig. ",

@@ -65,7 +65,8 @@ var newSessionHandlers = {
         this.emitWithState("helpTheUser", true);
     },
     "Unhandled": function () {
-        this.emit(":ask", this.t('DIN_NOT_UNDERSTAND'), this.t('DIN_NOT_UNDERSTAND'));
+        var speechOutput = this.t('DID_NOT_UNDERSTAND');
+        this.emit(":ask", speechOutput , speechOutput);
     }
 };
 
@@ -106,8 +107,8 @@ var selectStateHandlers = Alexa.CreateStateHandler(STATES.SELECT, {
         this.emit(":ask", speechOutput, speechOutput);
     },
     "Unhandled": function () {
-        var speechOutput = "Ich habe dich leider nicht verstanden";
-        this.emit(":ask", speechOutput, speechOutput);
+        var speechOutput = this.t('DID_NOT_UNDERSTAND');
+        this.emit(":ask", speechOutput , speechOutput);
     },
     "SessionEndedRequest": function () {
         console.log("Session ended in analysis state: " + this.event.request.reason);
@@ -185,6 +186,10 @@ var groupingStateHandlers = Alexa.CreateStateHandler(STATES.GROUPING, {
         this.handler.state = STATES.ABORT;
         var speechOutput = this.t('END_QUESTION');
         this.emit(":ask", speechOutput, speechOutput);
+    },
+    "Unhandled": function () {
+        var speechOutput = this.t('DID_NOT_UNDERSTAND');
+        this.emit(":ask", speechOutput , speechOutput);
     }
 });
 var doneStateHandlers = Alexa.CreateStateHandler(STATES.DONE, {
@@ -197,6 +202,10 @@ var doneStateHandlers = Alexa.CreateStateHandler(STATES.DONE, {
     "AMAZON.NoIntent": function() {
         var speechOutput = this.t('END_SESSION');
         this.emit(":tell", speechOutput);
+    },
+    "Unhandled": function () {
+        var speechOutput = this.t('DID_NOT_UNDERSTAND');
+        this.emit(":ask", speechOutput , speechOutput);
     }
 });
 var abortStateHandlers = Alexa.CreateStateHandler(STATES.ABORT, {
@@ -209,6 +218,10 @@ var abortStateHandlers = Alexa.CreateStateHandler(STATES.ABORT, {
         var speechOutput = this.t('ANOTHER_SELECT');
         this.handler.state = STATES.SELECT;
         this.emit(":ask", speechOutput, speechOutput);
+    },
+    "Unhandled": function () {
+        var speechOutput = this.t('DID_NOT_UNDERSTAND');
+        this.emit(":ask", speechOutput , speechOutput);
     }
 });
 
@@ -228,8 +241,8 @@ var helpStateHandlers = Alexa.CreateStateHandler(STATES.HELP, {
         this.emitWithState("StartGame", false);
     },
     "Unhandled": function () {
-        var speechOutput = "Sage ja, um fortzufahren. Sage nein, um zu beenden.";
-        this.emit(":ask", speechOutput, speechOutput);
+        var speechOutput = this.t('DID_NOT_UNDERSTAND');
+        this.emit(":ask", speechOutput , speechOutput);
     },
     "SessionEndedRequest": function () {
         console.log("Session ended in help state: " + this.event.request.reason);
