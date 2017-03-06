@@ -299,9 +299,9 @@ function apiCall(handler) {
     apiConnection.doRequest(payload, function(result) {
         var number = result.counter == "1" ? "einen" : result.counter;
         console.log("Number: " + number);
-        cardTitle = 'Anzeige aller ' + handle.attributes["table"];
+        cardTitle = 'Anzeige aller ' + handler.attributes["table"];
         cardContent = 'Ich habe ' + number + ' gefunden!';
-        handler.emit(':askWithCard', "Ich habe " + number + ' ' + handle.attributes["table"] + ' gefunden!' + 'Haben Sie noch weitere Fragen?', cardTitle, cardContent);
+        handler.emit(':askWithCard', "Ich habe " + number + ' ' + handler.attributes["table"] + ' gefunden!' + 'Haben Sie noch weitere Fragen?', cardTitle, cardContent);
     });
 }
 
