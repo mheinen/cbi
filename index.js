@@ -1,6 +1,7 @@
 /**
  * Created by matthias on 01.03.17.
  */
+"use strict";
 // Use Express
 var express = require('express');
 
@@ -84,6 +85,7 @@ var selectStateHandlers = Alexa.CreateStateHandler(STATES.SELECT, {
     'Select': function () {
         console.log('Select');
         Object.assign(this.attributes, {
+            "intent": "select",
             "table": this.event.request.intent.slots.table.value,
             "column": this.event.request.intent.slots.column.value,
             "operand": this.event.request.intent.slots.operand.value,
@@ -118,6 +120,8 @@ var selectStateHandlers = Alexa.CreateStateHandler(STATES.SELECT, {
         this.emitWithState("chooseGrouping");
     },
     "AMAZON.NoIntent": function() {
+        this.handler.state = STATES.GRAPH;
+        this.emitWithState("fromSelect");
         var handle = this;
         var payload = { intent: 'Select', tablename: this.attributes["table"], column: this.attributes["column"],
             operand: this.attributes["operand"], value: this.attributes["value"] };
@@ -142,13 +146,13 @@ var groupingStateHandlers = Alexa.CreateStateHandler(STATES.GROUPING, {
             "kind": "group",
             "groupColumn": this.event.request.intent.slots.column.value
         });
-        this.emit(':ask', this.t('WITH_GRAPHS'), this.t('WITH_GRAPHS'));
+        this.emit(':ask', this.t('WITH_GRAPH'), this.t('WITH_GRAPH'));
     },
     'Cluster': function () {
         Object.assign(this.attributes, {
             "kind": "cluster"
         });
-        this.emit(':ask', this.t('WITH_GRAPHS'), this.t('WITH_GRAPHS'));
+        this.emit(':ask', this.t('WITH_GRAPH'), this.t('WITH_GRAPH'));
     },
     "AMAZON.HelpIntent": function () {
         this.handler.state = STATES.HELP;
@@ -199,22 +203,6 @@ var groupingStateHandlers = Alexa.CreateStateHandler(STATES.GROUPING, {
         this.emit(":ask", speechOutput , speechOutput);
     }
 });
-var doneStateHandlers = Alexa.CreateStateHandler(STATES.DONE, {
-
-    "AMAZON.YesIntent": function() {
-        this.handler.state = STATES.SELECT;
-        var speechOutput = this.t('ANOTHER_SELECT');
-        this.emit(":ask", speechOutput, speechOutput);
-    },
-    "AMAZON.NoIntent": function() {
-        var speechOutput = this.t('END_SESSION');
-        this.emit(":tell", speechOutput);
-    },
-    "Unhandled": function () {
-        var speechOutput = this.t('DID_NOT_UNDERSTAND');
-        this.emit(":ask", speechOutput , speechOutput);
-    }
-});
 var abortStateHandlers = Alexa.CreateStateHandler(STATES.ABORT, {
 
     "AMAZON.YesIntent": function() {
@@ -231,7 +219,56 @@ var abortStateHandlers = Alexa.CreateStateHandler(STATES.ABORT, {
         this.emit(":ask", speechOutput , speechOutput);
     }
 });
-
+var graphStateHandlers = Alexa.CreateStateHandler(STATES.GRAPH, {
+    "fromSelect": function () {
+        var speechOutput = this.t('WITH_GRAPH');
+        this.emit(":ask", speechOutput, speechOutput);
+    },
+    "helpGrouping": function () {
+        var speechOutput = this.t('HELP_GROUPING');
+        this.handler.state = STATES.GROUPING;
+        this.emit(":ask", speechOutput, speechOutput);
+    },
+    "AMAZON.YesIntent": function() {
+        this.attributes["intent"] = "selectWithGraph";
+        this.handler.state = STATES.DONE;
+        this.emitWithState("done", true);
+    },
+    "AMAZON.NoIntent": function() {
+        var speechOutput = this.t('ANOTHER_SELECT');
+        this.handler.state = STATES.SELECT;
+        this.emit(":ask", speechOutput, speechOutput);
+    },
+    "AMAZON.StartOverIntent": function () {
+        this.handler.state = STATES.START;
+        this.emitWithState("StartGame", false);
+    },
+    "Unhandled": function () {
+        var speechOutput = this.t('DID_NOT_UNDERSTAND');
+        this.emit(":ask", speechOutput , speechOutput);
+    },
+    "SessionEndedRequest": function () {
+        console.log("Session ended in help state: " + this.event.request.reason);
+    }
+});
+var doneStateHandlers = Alexa.CreateStateHandler(STATES.DONE, {
+    "done": function () {
+        apiCall(this);
+    },
+    "AMAZON.YesIntent": function() {
+        this.handler.state = STATES.SELECT;
+        var speechOutput = this.t('ANOTHER_SELECT');
+        this.emit(":ask", speechOutput, speechOutput);
+    },
+    "AMAZON.NoIntent": function() {
+        var speechOutput = this.t('END_SESSION');
+        this.emit(":tell", speechOutput);
+    },
+    "Unhandled": function () {
+        var speechOutput = this.t('DID_NOT_UNDERSTAND');
+        this.emit(":ask", speechOutput , speechOutput);
+    }
+});
 var helpStateHandlers = Alexa.CreateStateHandler(STATES.HELP, {
     "helpSelect": function () {
         var speechOutput = this.t('HELP_SELECT');
@@ -256,6 +293,19 @@ var helpStateHandlers = Alexa.CreateStateHandler(STATES.HELP, {
     }
 });
 
+function apiCall(handler) {
+    var payload = { intent: 'Group', tablename: handler.attributes["table"], column: handler.attributes["column"],
+        operand: handler.attributes["operand"], value: handler.attributes["value"],
+        groupColumn: handler.attributes["groupColumn"], kind: handler.attributes["kind"] };
+    apiConnection.doRequest(payload, function(result) {
+        var number = result.counter == "1" ? "einen" : result.counter;
+        console.log("Number: " + number);
+        cardTitle = 'Anzeige aller ' + handle.attributes["table"];
+        cardContent = 'Ich habe ' + number + ' gefunden!';
+        handler.emit(':askWithCard', "Ich habe " + number + ' ' + handle.attributes["table"] + ' gefunden!' + 'Haben Sie noch weitere Fragen?', cardTitle, cardContent);
+    });
+}
+
 alexaRouter.get('/', function (req, res) {
     res.writeHead(200);
     res.end("hello world\n");
@@ -275,7 +325,8 @@ alexaRouter.post('/', function(req, res) {
     var alexa = Alexa.handler(req.body, context);
     alexa.resources = languageString;
     alexa.registerHandlers(newSessionHandlers, startStateHandlers, selectStateHandlers,
-        helpStateHandlers, doneStateHandlers, abortStateHandlers, groupingStateHandlers);
+        helpStateHandlers, doneStateHandlers, abortStateHandlers, groupingStateHandlers,
+        graphStateHandlers);
     alexa.execute();
 });
 

@@ -19,8 +19,8 @@ var languageString = {
             "HELP_GROUPING": "Sagen Sie beispielsweise <break time='200ms'/> Zusammenfassen nach Umsatz, <break time='200ms'/>" +
             "um den Umsatz zusammenzufassen. Sie können auch mit <break time='200ms'/> Bilde Cluster  <break time='200ms'/>" +
             "Ihre Daten zu Clustern zusammenfassen.",
-            "WITH_GRAPHS": "Soll eine graphische Repräsentation erzeugt werden?",
-            "START_UNHANDLED": "Du kannst jederzeit ein neues Spiel beginnen, sage einfach „Spiel starten“.",
+            "WITH_GRAPH": "Soll eine graphische Repräsentation erzeugt werden?",
+            "DONE": "Ihre Auswertung können Sie im Browser einsehen. Möchten Sie eine weitere Analyse durchführen?",
             "NEW_GAME_MESSAGE": "Willkommen bei %s. ",
             "ANSWER_CORRECT_MESSAGE": "Richtig. ",
             "ANSWER_WRONG_MESSAGE": "Falsch. ",
