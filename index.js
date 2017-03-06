@@ -122,7 +122,7 @@ var selectStateHandlers = Alexa.CreateStateHandler(STATES.SELECT, {
     "AMAZON.NoIntent": function() {
         this.handler.state = STATES.GRAPH;
         this.emitWithState("fromSelect");
-        var handle = this;
+/*        var handle = this;
         var payload = { intent: 'Select', tablename: this.attributes["table"], column: this.attributes["column"],
             operand: this.attributes["operand"], value: this.attributes["value"] };
 
@@ -133,7 +133,7 @@ var selectStateHandlers = Alexa.CreateStateHandler(STATES.SELECT, {
             cardContent = 'Ich habe ' + number + ' gefunden!';
             handle.handler.state = STATES.DONE;
             handle.emit(':askWithCard', "Ich habe " + number + ' ' + handle.attributes["table"] + ' gefunden!' + 'Haben Sie noch weitere Fragen?', cardTitle, cardContent);
-        });
+        });*/
     }
 });
 var groupingStateHandlers = Alexa.CreateStateHandler(STATES.GROUPING, {
@@ -232,12 +232,11 @@ var graphStateHandlers = Alexa.CreateStateHandler(STATES.GRAPH, {
     "AMAZON.YesIntent": function() {
         this.attributes["intent"] = "selectWithGraph";
         this.handler.state = STATES.DONE;
-        this.emitWithState("done", true);
+        this.emitWithState("done");
     },
     "AMAZON.NoIntent": function() {
-        var speechOutput = this.t('ANOTHER_SELECT');
-        this.handler.state = STATES.SELECT;
-        this.emit(":ask", speechOutput, speechOutput);
+        this.handler.state = STATES.DONE;
+        this.emitWithState("done");
     },
     "AMAZON.StartOverIntent": function () {
         this.handler.state = STATES.START;
