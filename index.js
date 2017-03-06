@@ -44,6 +44,7 @@ var STATES = {
     DONE: "_DONEMODE",
     GRAPH: "_GRAPHMODE",
     GROUPING: "_GROUPINGMODE",
+    AGGREGATION: "_AGGREGATIONMODE",
     ANALYSIS: "_ANALYSISMODE", // Analyze data.
     START: "_STARTMODE", // Entry point.
     HELP: "_HELPMODE" // The user is asking for help.
@@ -133,8 +134,8 @@ var groupingStateHandlers = Alexa.CreateStateHandler(STATES.GROUPING, {
             "kind": "group",
             "groupColumn": this.event.request.intent.slots.column.value
         });
-        this.handler.state = STATES.GRAPH;
-        this.emitWithState("withGraph");
+        this.handler.state = STATES.AGGREGATION;
+        this.emitWithState("chooseColumn");
     },
     'Cluster': function () {
         Object.assign(this.attributes, {
@@ -145,6 +146,37 @@ var groupingStateHandlers = Alexa.CreateStateHandler(STATES.GROUPING, {
     "AMAZON.HelpIntent": function () {
         this.handler.state = STATES.HELP;
         this.emitWithState("helpGrouping");
+    },
+    "AMAZON.StopIntent": function () {
+        this.handler.state = STATES.ABORT;
+        var speechOutput = this.t('END_QUESTION');
+        this.emit(":ask", speechOutput, speechOutput);
+    },
+    "AMAZON.CancelIntent": function () {
+        this.handler.state = STATES.ABORT;
+        var speechOutput = this.t('END_QUESTION');
+        this.emit(":ask", speechOutput, speechOutput);
+    },
+    "Unhandled": function () {
+        var speechOutput = this.t('DID_NOT_UNDERSTAND');
+        this.emit(":ask", speechOutput , speechOutput);
+    }
+});var aggregationStateHandlers = Alexa.CreateStateHandler(STATES.AGGREGATION, {
+    "chooseColumn": function () {
+        var speechOutput = this.t('CHOOSE_COLUMN');
+        var repeat = this.t('CHOOSE_COLUMN_REPEAT');
+        this.emit(":ask", speechOutput, repeat);
+    },
+    "Aggregation": function () {
+        Object.assign(this.attributes, {
+            "function": this.event.request.intent.slots.function.value,
+            "aggColumn": this.event.request.intent.slots.aggColumn.value
+        });
+        this.emit(":ask", speechOutput, repeat);
+    },
+    "AMAZON.HelpIntent": function () {
+        this.handler.state = STATES.HELP;
+        this.emitWithState("helpAggregation");
     },
     "AMAZON.StopIntent": function () {
         this.handler.state = STATES.ABORT;
@@ -244,6 +276,11 @@ var helpStateHandlers = Alexa.CreateStateHandler(STATES.HELP, {
         this.handler.state = STATES.GROUPING;
         this.emit(":ask", speechOutput, speechOutput);
     },
+    "helpAggregation": function () {
+        var speechOutput = this.t('HELP_AGGREGATION');
+        this.handler.state = STATES.AGGREGATION;
+        this.emit(":ask", speechOutput, speechOutput);
+    },
     "AMAZON.StartOverIntent": function () {
         this.handler.state = STATES.START;
         this.emitWithState("StartGame", false);
@@ -261,7 +298,8 @@ function apiCall(handler) {
     var payload = { intent: handler.attributes["intent"], table: handler.attributes["table"],
         column: handler.attributes["column"], operand: handler.attributes["operand"],
         value: handler.attributes["value"], groupColumn: handler.attributes["groupColumn"],
-        kind: handler.attributes["kind"], withGraph: handler.attributes["withGraph"] };
+        kind: handler.attributes["kind"], withGraph: handler.attributes["withGraph"],
+        function: handler.attributes["column"], aggColumn: handler.attributes["aggColumn"]};
 
     apiConnection.doRequest(payload, function(result) {
         var speechOutput = result.speechOutput;
@@ -293,7 +331,7 @@ alexaRouter.post('/', function(req, res) {
     alexa.resources = languageString;
     alexa.registerHandlers(newSessionHandlers, startStateHandlers, selectStateHandlers,
         helpStateHandlers, doneStateHandlers, abortStateHandlers, groupingStateHandlers,
-        graphStateHandlers);
+        graphStateHandlers, aggregationStateHandlers);
     alexa.execute();
 });
 

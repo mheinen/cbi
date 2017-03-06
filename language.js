@@ -21,7 +21,11 @@ var languageString = {
             "Ihre Daten zu Clustern zusammenfassen.",
             "WITH_GRAPH": "Soll eine graphische Repräsentation erzeugt werden?",
             "DONE": "Ihre Auswertung können Sie im Browser einsehen. Möchten Sie eine weitere Analyse durchführen?",
-            "NEW_GAME_MESSAGE": "Willkommen bei %s. ",
+            "CHOOSE_COLUMN": "Welche Spalte soll wie aggregiert werden?",
+            "CHOOSE_COLUMN_REPEAT": "Sagen sie beispielsweise Summe Alter",
+            "HELP_AGGREGATION": "Gültige Eingaben lauten <break time='200ms'/> Aggregation Funktion Spalte <break time='200ms'/>" +
+            "Erlaubte Funktionen sind Summe, Durchschnitt, Anzahl, Minimum und Maximum. Beispielsweise Aggregation Summe Umsatz oder " +
+            "Aggregation Maximum Alter. Die Aggregation bezieht sich auf ihre zusammengefasste Spalte.",
             "ANSWER_CORRECT_MESSAGE": "Richtig. ",
             "ANSWER_WRONG_MESSAGE": "Falsch. ",
             "CORRECT_ANSWER_MESSAGE": "Die richtige Antwort ist %s: %s. ",
