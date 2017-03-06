@@ -119,19 +119,7 @@ var selectStateHandlers = Alexa.CreateStateHandler(STATES.SELECT, {
     },
     "AMAZON.NoIntent": function() {
         this.handler.state = STATES.GRAPH;
-        this.emitWithState("fromSelect");
-/*        var handle = this;
-        var payload = { intent: 'Select', tablename: this.attributes["table"], column: this.attributes["column"],
-            operand: this.attributes["operand"], value: this.attributes["value"] };
-
-        apiConnection.doRequest(payload, function(result) {
-            var number = result.counter == "1" ? "einen" : result.counter;
-            console.log("Number: " + number);
-            cardTitle = 'Anzeige aller ' + handle.attributes["table"];
-            cardContent = 'Ich habe ' + number + ' gefunden!';
-            handle.handler.state = STATES.DONE;
-            handle.emit(':askWithCard', "Ich habe " + number + ' ' + handle.attributes["table"] + ' gefunden!' + 'Haben Sie noch weitere Fragen?', cardTitle, cardContent);
-        });*/
+        this.emitWithState("withGraph");
     }
 });
 var groupingStateHandlers = Alexa.CreateStateHandler(STATES.GROUPING, {
@@ -218,7 +206,7 @@ var abortStateHandlers = Alexa.CreateStateHandler(STATES.ABORT, {
     }
 });
 var graphStateHandlers = Alexa.CreateStateHandler(STATES.GRAPH, {
-    "fromSelect": function () {
+    "withGraph": function () {
         var speechOutput = this.t('WITH_GRAPH');
         this.emit(":ask", speechOutput, speechOutput);
     },
@@ -297,11 +285,12 @@ function apiCall(handler) {
         kind: handler.attributes["kind"] };
 
     apiConnection.doRequest(payload, function(result) {
-        var number = result.counter == "1" ? "einen" : result.counter;
-        console.log("Number: " + number);
+        var speechOutput = result.speechOutput;
+        var count = result.selectCount;
         cardTitle = 'Anzeige aller ' + handler.attributes["table"];
-        cardContent = 'Ich habe ' + number + ' gefunden!';
-        handler.emit(':askWithCard', "Ich habe " + number + ' ' + handler.attributes["table"] + ' gefunden!' + 'Haben Sie noch weitere Fragen?', cardTitle, cardContent);
+        cardContent = 'Ich habe ' + count + ' gefunden!';
+        handler.emit(':askWithCard', speechOutput , cardTitle, cardContent);
+        //handler.emit(':askWithCard', "Ich habe " + count + ' ' + handler.attributes["table"] + ' gefunden!' + 'Wollen Sie eine weitere Analyse durchführen?', cardTitle, cardContent);
     });
 }
 
