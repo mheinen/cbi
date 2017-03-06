@@ -83,15 +83,13 @@ var startStateHandlers = Alexa.CreateStateHandler(STATES.START, {
 
 var selectStateHandlers = Alexa.CreateStateHandler(STATES.SELECT, {
     'Select': function () {
-        console.log('Select');
         Object.assign(this.attributes, {
-            "intent": "select",
+            "intent": "Select",
             "table": this.event.request.intent.slots.table.value,
             "column": this.event.request.intent.slots.column.value,
             "operand": this.event.request.intent.slots.operand.value,
             "value": this.event.request.intent.slots.value.value
         });
-        console.log('Assigned');
         this.emit(':ask', this.t('START_GROUPING'), this.t('START_GROUPING_REPEAT'));
     },
     "AMAZON.HelpIntent": function () {
@@ -293,9 +291,10 @@ var helpStateHandlers = Alexa.CreateStateHandler(STATES.HELP, {
 });
 
 function apiCall(handler) {
-    var payload = { intent: 'Group', tablename: handler.attributes["table"], column: handler.attributes["column"],
-        operand: handler.attributes["operand"], value: handler.attributes["value"],
-        groupColumn: handler.attributes["groupColumn"], kind: handler.attributes["kind"] };
+    var payload = { intent: handler.attributes["intent"], tablename: handler.attributes["table"],
+        column: handler.attributes["column"], operand: handler.attributes["operand"],
+        value: handler.attributes["value"], groupColumn: handler.attributes["groupColumn"],
+        kind: handler.attributes["kind"] };
 
     apiConnection.doRequest(payload, function(result) {
         var number = result.counter == "1" ? "einen" : result.counter;
