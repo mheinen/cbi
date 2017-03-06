@@ -118,6 +118,7 @@ var selectStateHandlers = Alexa.CreateStateHandler(STATES.SELECT, {
         this.emitWithState("chooseGrouping");
     },
     "AMAZON.NoIntent": function() {
+        console.log("Select - No");
         this.handler.state = STATES.GRAPH;
         this.emitWithState("withGraph");
     }
