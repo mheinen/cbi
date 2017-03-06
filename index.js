@@ -118,13 +118,13 @@ var selectStateHandlers = Alexa.CreateStateHandler(STATES.SELECT, {
         this.emitWithState("chooseGrouping");
     },
     "AMAZON.NoIntent": function() {
-        console.log("Select - No");
         this.handler.state = STATES.GRAPH;
         this.emitWithState("withGraph");
     }
 });
 var groupingStateHandlers = Alexa.CreateStateHandler(STATES.GROUPING, {
     "chooseGrouping": function () {
+        this.attributes["intent"] = "Group";
         var speechOutput = this.t('GROUPING');
         this.emit(":ask", speechOutput, speechOutput);
     },
@@ -133,7 +133,8 @@ var groupingStateHandlers = Alexa.CreateStateHandler(STATES.GROUPING, {
             "kind": "group",
             "groupColumn": this.event.request.intent.slots.column.value
         });
-        this.emit(':ask', this.t('WITH_GRAPH'), this.t('WITH_GRAPH'));
+        this.handler.state = STATES.GRAPH;
+        this.emitWithState("withGraph");
     },
     'Cluster': function () {
         Object.assign(this.attributes, {
@@ -144,36 +145,6 @@ var groupingStateHandlers = Alexa.CreateStateHandler(STATES.GROUPING, {
     "AMAZON.HelpIntent": function () {
         this.handler.state = STATES.HELP;
         this.emitWithState("helpGrouping");
-    },
-    "AMAZON.YesIntent": function() {
-        var handle = this;
-        var payload = { intent: 'GroupWithGraph', tablename: this.attributes["table"], column: this.attributes["column"],
-            operand: this.attributes["operand"], value: this.attributes["value"],
-            groupColumn: this.attributes["groupColumn"], kind: this.attributes["kind"] };
-
-        apiConnection.doRequest(payload, function(result) {
-            var number = result.counter == "1" ? "einen" : result.counter;
-            console.log("Number: " + number);
-            cardTitle = 'Anzeige aller ' + handle.attributes["table"];
-            cardContent = 'Ich habe ' + number + ' gefunden!';
-            handle.handler.state = STATES.DONE;
-            handle.emit(':askWithCard', "Ich habe " + number + ' ' + handle.attributes["table"] + ' gefunden!' + 'Haben Sie noch weitere Fragen?', cardTitle, cardContent);
-        });
-    },
-    "AMAZON.NoIntent": function() {
-        var handle = this;
-        var payload = { intent: 'Group', tablename: this.attributes["table"], column: this.attributes["column"],
-            operand: this.attributes["operand"], value: this.attributes["value"],
-            groupColumn: this.attributes["groupColumn"], kind: this.attributes["kind"] };
-
-        apiConnection.doRequest(payload, function(result) {
-            var number = result.counter == "1" ? "einen" : result.counter;
-            console.log("Number: " + number);
-            cardTitle = 'Anzeige aller ' + handle.attributes["table"];
-            cardContent = 'Ich habe ' + number + ' gefunden!';
-            handle.handler.state = STATES.DONE;
-            handle.emit(':askWithCard', "Ich habe " + number + ' ' + handle.attributes["table"] + ' gefunden!' + 'Haben Sie noch weitere Fragen?', cardTitle, cardContent);
-        });
     },
     "AMAZON.StopIntent": function () {
         this.handler.state = STATES.ABORT;
@@ -190,6 +161,7 @@ var groupingStateHandlers = Alexa.CreateStateHandler(STATES.GROUPING, {
         this.emit(":ask", speechOutput , speechOutput);
     }
 });
+
 var abortStateHandlers = Alexa.CreateStateHandler(STATES.ABORT, {
 
     "AMAZON.YesIntent": function() {
@@ -211,17 +183,13 @@ var graphStateHandlers = Alexa.CreateStateHandler(STATES.GRAPH, {
         var speechOutput = this.t('WITH_GRAPH');
         this.emit(":ask", speechOutput, speechOutput);
     },
-    "helpGrouping": function () {
-        var speechOutput = this.t('HELP_GROUPING');
-        this.handler.state = STATES.GROUPING;
-        this.emit(":ask", speechOutput, speechOutput);
-    },
     "AMAZON.YesIntent": function() {
-        this.attributes["intent"] = "selectWithGraph";
+        this.attributes["withGraph"] = true;
         this.handler.state = STATES.DONE;
         this.emitWithState("done");
     },
     "AMAZON.NoIntent": function() {
+        this.attributes["withGraph"] = false;
         this.handler.state = STATES.DONE;
         this.emitWithState("done");
     },
@@ -249,6 +217,16 @@ var doneStateHandlers = Alexa.CreateStateHandler(STATES.DONE, {
     "AMAZON.NoIntent": function() {
         var speechOutput = this.t('END_SESSION');
         this.emit(":tell", speechOutput);
+    },
+    "AMAZON.StopIntent": function () {
+        this.handler.state = STATES.ABORT;
+        var speechOutput = this.t('END_QUESTION');
+        this.emit(":ask", speechOutput, speechOutput);
+    },
+    "AMAZON.CancelIntent": function () {
+        this.handler.state = STATES.ABORT;
+        var speechOutput = this.t('END_QUESTION');
+        this.emit(":ask", speechOutput, speechOutput);
     },
     "Unhandled": function () {
         var speechOutput = this.t('DID_NOT_UNDERSTAND');
@@ -280,10 +258,10 @@ var helpStateHandlers = Alexa.CreateStateHandler(STATES.HELP, {
 });
 
 function apiCall(handler) {
-    var payload = { intent: handler.attributes["intent"], tablename: handler.attributes["table"],
+    var payload = { intent: handler.attributes["intent"], table: handler.attributes["table"],
         column: handler.attributes["column"], operand: handler.attributes["operand"],
         value: handler.attributes["value"], groupColumn: handler.attributes["groupColumn"],
-        kind: handler.attributes["kind"] };
+        kind: handler.attributes["kind"], withGraph: handler.attributes["withGraph"] };
 
     apiConnection.doRequest(payload, function(result) {
         var speechOutput = result.speechOutput;
