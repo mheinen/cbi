@@ -39,8 +39,8 @@
           <file leaf-file-name="index.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/index.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="241">
-                  <caret line="234" column="33" lean-forward="false" selection-start-line="234" selection-start-column="33" selection-end-line="234" selection-end-column="33" />
+                <state relative-caret-position="602">
+                  <caret line="299" column="7" lean-forward="false" selection-start-line="299" selection-start-column="4" selection-end-line="299" selection-end-column="7" />
                   <folding />
                 </state>
               </provider>
@@ -56,6 +56,11 @@
         <option value="JavaScript File" />
       </list>
     </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>API</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -238,12 +243,12 @@
       <workItem from="1488631257215" duration="4089000" />
       <workItem from="1488653678002" duration="7537000" />
       <workItem from="1488708765095" duration="3499000" />
-      <workItem from="1488789823935" duration="2803000" />
+      <workItem from="1488789823935" duration="3202000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="19876000" />
+    <option name="totallyTimeSpent" value="20275000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -353,8 +358,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="241">
-          <caret line="234" column="33" lean-forward="false" selection-start-line="234" selection-start-column="33" selection-end-line="234" selection-end-column="33" />
+        <state relative-caret-position="602">
+          <caret line="299" column="7" lean-forward="false" selection-start-line="299" selection-start-column="4" selection-end-line="299" selection-end-column="7" />
           <folding />
         </state>
       </provider>

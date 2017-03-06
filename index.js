@@ -296,6 +296,7 @@ function apiCall(handler) {
     var payload = { intent: 'Group', tablename: handler.attributes["table"], column: handler.attributes["column"],
         operand: handler.attributes["operand"], value: handler.attributes["value"],
         groupColumn: handler.attributes["groupColumn"], kind: handler.attributes["kind"] };
+
     apiConnection.doRequest(payload, function(result) {
         var number = result.counter == "1" ? "einen" : result.counter;
         console.log("Number: " + number);
