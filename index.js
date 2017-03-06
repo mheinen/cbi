@@ -172,7 +172,8 @@ var groupingStateHandlers = Alexa.CreateStateHandler(STATES.GROUPING, {
             "function": this.event.request.intent.slots.function.value,
             "aggColumn": this.event.request.intent.slots.aggColumn.value
         });
-        this.emit(":ask", speechOutput, repeat);
+        this.handler.state = STATES.GRAPH;
+        this.emitWithState("withGraph");
     },
     "AMAZON.HelpIntent": function () {
         this.handler.state = STATES.HELP;
