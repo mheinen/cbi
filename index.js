@@ -169,7 +169,7 @@ var groupingStateHandlers = Alexa.CreateStateHandler(STATES.GROUPING, {
     },
     "Aggregation": function () {
         Object.assign(this.attributes, {
-            "function": this.event.request.intent.slots.function.value,
+            "aggFunction": this.event.request.intent.slots.aggFunction.value,
             "aggColumn": this.event.request.intent.slots.aggColumn.value
         });
         this.handler.state = STATES.GRAPH;
@@ -300,7 +300,7 @@ function apiCall(handler) {
         column: handler.attributes["column"], operand: handler.attributes["operand"],
         value: handler.attributes["value"], groupColumn: handler.attributes["groupColumn"],
         kind: handler.attributes["kind"], withGraph: handler.attributes["withGraph"],
-        function: handler.attributes["column"], aggColumn: handler.attributes["aggColumn"]};
+        function: handler.attributes["aggFunction"], aggColumn: handler.attributes["aggColumn"]};
 
     apiConnection.doRequest(payload, function(result) {
         var speechOutput = result.speechOutput;
