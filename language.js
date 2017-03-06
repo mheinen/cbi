@@ -9,8 +9,8 @@ var languageString = {
             "START_GROUPING" : "Wollen Sie die Daten noch zusammenfassen?",
             "START_GROUPING_REPEAT" : "Daten zusammenfassen? <break time='1s'/>Ja oder Nein?",
             "DID_NOT_UNDERSTAND": "Ich habe Sie leider nicht verstanden!",
-            "HELP_SELECT": "Sagen Sie beispielsweise <break time='500ms'/> Zeige mir alle Kunden mit Umsatz größer hundert"+
-            "<break time='500ms'/> Wobei Kunden der Name der Tabelle oder des <say-as interpret-as='characters'>csv</say-as> " +
+            "HELP_SELECT": "Sagen Sie beispielsweise <break time='200ms'/> Wähle alle Kunden mit Umsatz größer hundert"+
+            "<break time='200ms'/> Wobei Kunden der Name der Tabelle oder des <say-as interpret-as='characters'>csv</say-as> " +
             "ist und Umsatz der Name der Spalte",
             "END_SESSION": "Dann bis zum nächsten mal!",
             "END_QUESTION": "Analyse beenden?",

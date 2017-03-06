@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eb28c506-e96b-4415-b98e-7b3b314d0e03" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.js" afterPath="$PROJECT_DIR$/index.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/language.js" afterPath="$PROJECT_DIR$/language.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -25,8 +25,8 @@
           <file leaf-file-name="language.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/language.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="374">
-                  <caret line="22" column="109" lean-forward="false" selection-start-line="22" selection-start-column="109" selection-end-line="22" selection-end-column="109" />
+                <state relative-caret-position="204">
+                  <caret line="12" column="27" lean-forward="false" selection-start-line="12" selection-start-column="27" selection-end-line="12" selection-end-column="27" />
                   <folding />
                 </state>
               </provider>
@@ -39,7 +39,7 @@
           <file leaf-file-name="index.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/index.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-17">
+                <state relative-caret-position="-935">
                   <caret line="137" column="6" lean-forward="false" selection-start-line="137" selection-start-column="6" selection-end-line="137" selection-end-column="6" />
                   <folding />
                 </state>
@@ -70,8 +70,8 @@
       <list>
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/handler-module.js" />
-        <option value="$PROJECT_DIR$/language.js" />
         <option value="$PROJECT_DIR$/index.js" />
+        <option value="$PROJECT_DIR$/language.js" />
       </list>
     </option>
   </component>
@@ -243,12 +243,12 @@
       <workItem from="1488631257215" duration="4089000" />
       <workItem from="1488653678002" duration="7537000" />
       <workItem from="1488708765095" duration="3499000" />
-      <workItem from="1488789823935" duration="9268000" />
+      <workItem from="1488789823935" duration="9595000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="26341000" />
+    <option name="totallyTimeSpent" value="26668000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -341,14 +341,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/handler-module.js" />
-    <entry file="file://$PROJECT_DIR$/language.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="22" column="109" lean-forward="false" selection-start-line="22" selection-start-column="109" selection-end-line="22" selection-end-column="109" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/apiConnection.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="340">
@@ -359,8 +351,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-17">
+        <state relative-caret-position="-935">
           <caret line="137" column="6" lean-forward="false" selection-start-line="137" selection-start-column="6" selection-end-line="137" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/language.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="27" lean-forward="false" selection-start-line="12" selection-start-column="27" selection-end-line="12" selection-end-column="27" />
           <folding />
         </state>
       </provider>
