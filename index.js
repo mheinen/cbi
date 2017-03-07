@@ -37,6 +37,7 @@ alexaRouter.get('/', function (req, res) {
     res.writeHead(200);
     res.end("hello world\n");
 });
+
 alexaRouter.post('/', function(req, res) {
     // Build the context manually, because Amazon Lambda is missing and alexa-sdk normally requires it
     var context = {
@@ -51,9 +52,11 @@ alexaRouter.post('/', function(req, res) {
     // Delegate the request to the Alexa SDK and the declared intent-handlers
     var alexa = Alexa.handler(req.body, context);
     alexa.resources = languageString;
-    console.log(handlerArray);
-    console.log(JSON.stringify(handlerArray));
-    alexa.registerHandlers(handlerArray);
+    function register(elem){
+        alexa.registerHandlers(elem);
+    }
+    handlerArray.forEach(register);
+
     alexa.execute();
 });
 
