@@ -10,7 +10,10 @@ var port = process.env.PORT || 8080;
 
 // Parse JSON Bodys
 var bodyParser = require('body-parser');
+
 var handlerModule = require('./handler-module');
+var handlerArray = handlerModule.buildHandlers(Alexa);
+
 var languageString = require("./language").language;
 
 var app = express();
@@ -30,7 +33,7 @@ app.use('/alexa', alexaRouter);
 alexaRouter.use(verifier);
 
 alexaRouter.use(bodyParser.json());
-var handlerArray = handlerModule.buildHandlers(Alexa);
+
 
 
 alexaRouter.get('/', function (req, res) {
@@ -52,6 +55,7 @@ alexaRouter.post('/', function(req, res) {
     // Delegate the request to the Alexa SDK and the declared intent-handlers
     var alexa = Alexa.handler(req.body, context);
     alexa.resources = languageString;
+    // Sadly register handlers does not accept an Array of handlers. That's why we use a loop to register the handlers
     function register(elem){
         alexa.registerHandlers(elem);
     }
@@ -60,12 +64,7 @@ alexaRouter.post('/', function(req, res) {
     alexa.execute();
 });
 
-// ********** Test ************
-//var apiConnection = require('./apiConnection');
-//var payload = {name1: 'Hans', name2: "Günther"};
-// ********** Test Ende ***********
+
  app.listen(port, function () {
  console.log('Warte auf Anfragen auf port ' + port +'!');
- //  apiConnection.doRequest(payload);
-
  });

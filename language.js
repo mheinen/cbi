@@ -19,7 +19,7 @@ var languageString = {
             "HELP_GROUPING": "Sagen Sie beispielsweise <break time='200ms'/> Zusammenfassen nach Umsatz, <break time='200ms'/>" +
             "um den Umsatz zusammenzufassen. Sie können auch mit <break time='200ms'/> Bilde Cluster  <break time='200ms'/>" +
             "Ihre Daten zu Clustern zusammenfassen.",
-            "WITH_GRAPH": "Soll eine graphische Repräsentation erzeugt werden?",
+            "WITH_GRAPH": "Soll eine grafische Repräsentation erzeugt werden?",
             "DONE": "Ihre Auswertung können Sie im Browser einsehen. Möchten Sie eine weitere Analyse durchführen?",
             "CHOOSE_COLUMN": "Welche Spalte soll wie aggregiert werden?",
             "CHOOSE_COLUMN_REPEAT": "Sagen sie beispielsweise Summe Alter",
