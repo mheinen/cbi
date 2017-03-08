@@ -23,16 +23,10 @@ var languageString = {
             "DONE": "Ihre Auswertung können Sie im Browser einsehen. Möchten Sie eine weitere Analyse durchführen?",
             "CHOOSE_COLUMN": "Welche Spalte soll wie aggregiert werden?",
             "CHOOSE_COLUMN_REPEAT": "Sagen sie beispielsweise Summe Alter",
-            "HELP_AGGREGATION": "Gültige Eingaben lauten <break time='200ms'/> Aggregation Funktion Spalte <break time='200ms'/>" +
-            "Erlaubte Funktionen sind Summe, Durchschnitt, Anzahl, Minimum und Maximum. Beispielsweise Aggregation Summe Umsatz oder " +
-            "Aggregation Maximum Alter. Die Aggregation bezieht sich auf ihre zusammengefasste Spalte.",
-            "ANSWER_CORRECT_MESSAGE": "Richtig. ",
-            "ANSWER_WRONG_MESSAGE": "Falsch. ",
-            "CORRECT_ANSWER_MESSAGE": "Die richtige Antwort ist %s: %s. ",
-            "ANSWER_IS_MESSAGE": "Diese Antwort ist ",
-            "TELL_QUESTION_MESSAGE": "Frage %s. %s ",
-            "GAME_OVER_MESSAGE": "Du hast %s von %s richtig beantwortet. Danke fürs Mitspielen!",
-            "SCORE_IS_MESSAGE": "Dein Ergebnis ist %s. "
+            "HELP_AGGREGATION": "Gültige Eingaben folgen dem Muster <break time='200ms'/> Aggregation <break time='100ms'/> " +
+            "Funktion <break time='100ms'/> Spalte <break time='500ms'/>" +
+            "Erlaubte Funktionen sind Summe, Durchschnitt, Anzahl, Minimum und Maximum. <break time='200ms'/> Beispielsweise " +
+            "Aggregation Summe Umsatz <break time='200ms'/> bildet bei den gewählten Gruppen die Summe der Spalte Umsatz"
         }
     }
 };
