@@ -4,6 +4,8 @@
 "use strict";
 // Use Express
 var express = require('express');
+/*var fs = require('fs');
+var https = require('https');*/
 
 // Let the Server decide about the port with 8000 as default
 var port = process.env.PORT || 8080;
@@ -11,8 +13,7 @@ var port = process.env.PORT || 8080;
 // Parse JSON Bodys
 var bodyParser = require('body-parser');
 
-var handlerModule = require('./handler-module');
-var handlerArray = handlerModule.buildHandlers(Alexa);
+
 
 var languageString = require("./language").language;
 
@@ -20,6 +21,8 @@ var app = express();
 
 // Initialize the Alexa SDK
 var Alexa = require('alexa-sdk');
+var handlerModule = require('./handler-module');
+var handlerArray = handlerModule.buildHandlers(Alexa);
 // Amazon erwartet Verifizierung
 var verifier = require('alexa-verifier-middleware');
 
@@ -64,6 +67,10 @@ alexaRouter.post('/', function(req, res) {
     alexa.execute();
 });
 
+/*https.createServer({
+    key: fs.readFileSync('private-key.pem'),
+    cert: fs.readFileSync('certificate.pem')
+}, app).listen(port);*/
 
  app.listen(port, function () {
  console.log('Warte auf Anfragen auf port ' + port +'!');
