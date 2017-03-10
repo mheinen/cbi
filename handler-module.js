@@ -63,7 +63,7 @@ exports.buildHandlers = function(Alexa) {
                 "column": this.event.request.intent.slots.column.value,
                 "operand": this.event.request.intent.slots.operand.value,
                 "value": this.event.request.intent.slots.value.value,
-                "accessToken": this.event.accessToken
+                "accessToken": this.event.session.user.accessToken
             });
             this.emit(':ask', this.t('START_GROUPING'), this.t('START_GROUPING_REPEAT'));
         },
