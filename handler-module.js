@@ -56,12 +56,14 @@ exports.buildHandlers = function(Alexa) {
 
     var selectStateHandlers = Alexa.CreateStateHandler(STATES.SELECT, {
         'Select': function () {
+            console.log(this.event);
             Object.assign(this.attributes, {
                 "intent": "Select",
                 "table": this.event.request.intent.slots.table.value,
                 "column": this.event.request.intent.slots.column.value,
                 "operand": this.event.request.intent.slots.operand.value,
-                "value": this.event.request.intent.slots.value.value
+                "value": this.event.request.intent.slots.value.value,
+                "accessToken": this.event.accessToken
             });
             this.emit(':ask', this.t('START_GROUPING'), this.t('START_GROUPING_REPEAT'));
         },
@@ -82,9 +84,6 @@ exports.buildHandlers = function(Alexa) {
         "Unhandled": function () {
             var speechOutput = this.t('DID_NOT_UNDERSTAND');
             this.emit(":ask", speechOutput , speechOutput);
-        },
-        "SessionEndedRequest": function () {
-            console.log("Session ended in analysis state: " + this.event.request.reason);
         },
         "AMAZON.YesIntent": function() {
             this.handler.state = STATES.GROUPING;
@@ -198,16 +197,9 @@ exports.buildHandlers = function(Alexa) {
             this.handler.state = STATES.DONE;
             this.emitWithState("done");
         },
-        "AMAZON.StartOverIntent": function () {
-            this.handler.state = STATES.START;
-            this.emitWithState("StartGame", false);
-        },
         "Unhandled": function () {
             var speechOutput = this.t('DID_NOT_UNDERSTAND');
             this.emit(":ask", speechOutput , speechOutput);
-        },
-        "SessionEndedRequest": function () {
-            console.log("Session ended in help state: " + this.event.request.reason);
         }
     });
     var doneStateHandlers = Alexa.CreateStateHandler(STATES.DONE, {
@@ -254,16 +246,9 @@ exports.buildHandlers = function(Alexa) {
             this.handler.state = STATES.AGGREGATION;
             this.emit(":ask", speechOutput, speechOutput);
         },
-        "AMAZON.StartOverIntent": function () {
-            this.handler.state = STATES.START;
-            this.emitWithState("StartGame", false);
-        },
         "Unhandled": function () {
             var speechOutput = this.t('DID_NOT_UNDERSTAND');
             this.emit(":ask", speechOutput , speechOutput);
-        },
-        "SessionEndedRequest": function () {
-            console.log("Session ended in help state: " + this.event.request.reason);
         }
     });
     var handlerArray = [aggregationStateHandlers, groupingStateHandlers, selectStateHandlers, startStateHandlers,
@@ -278,7 +263,8 @@ function apiCall(handler) {
         column: handler.attributes["column"], operand: handler.attributes["operand"],
         value: handler.attributes["value"], groupColumn: handler.attributes["groupColumn"],
         kind: handler.attributes["kind"], withGraph: handler.attributes["withGraph"],
-        function: handler.attributes["aggFunction"], aggColumn: handler.attributes["aggColumn"]};
+        function: handler.attributes["aggFunction"], aggColumn: handler.attributes["aggColumn"],
+        accessToken: handler.attributes["accessToken"]};
 
     apiConnection.doRequest(payload, function(result) {
         var speechOutput = result.speechOutput;
